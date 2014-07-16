@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="tictactoe">
+<head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
+  <title>TicTacTest</title>
+</head>
+<body>
+  <section ng-controller="cube" id="grid">
+    <section id="columnA" class="boxes">
+      <div id="A1 1" class="columnA row1 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="A2 1" class="columnA row2 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="A3 3" class="columnA row3 box" ng-class="box.player" ng-click="player_move()"></div>
+    </section>
+
+    <section id="columnB" class="boxes">
+      <div id="B1 4" class="columnB row1 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="B2 4" class="columnB row2 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="B3 6" class="columnB row3 box" ng-class="box.player" ng-click="player_move()"></div>
+    </section>
+
+    <section id="columnC" class="boxes">
+      <div id="C1 7" class="columnC row1 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="C2 8" class="columnC row2 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="C3 9" class="columnC row2 box" ng-class="box.player" ng-click="player_move()"></div>
+    </section>
+  </section>
+  <p ng-bind="">
+<script type="text/javascript">
+  angular.module("tictactoe", [])
+    .controller('cube', ['$scope', function($scope) {
+      var moves = 0; //no moves have been made
+      // $scope.player: box.player;
+
+      $scope.player_move = function() {
+        moves += 1;
+        if (moves %2!=0){//odds (player 1)
+          player_1();}
+        else {
+          player_2();}
+      };
+
+      var player_1 = function() {
+        alert("player 1 again!");
+        if ($scope.player === "player2"){
+          alert("Player 2 already owns that space. Choose Another");}
+        else if ($scope.player === "player1"){
+          alert("You already own that space. Choose Another");}
+        else {
+          $scope.player = "player1";
+          moves++;}
+      };
+
+      var player_2 = function() {
+        alert("player 1 again!");
+        if ($scope.player === "player1"){
+          alert("Player 1 already owns that space. Choose Another");}
+        else if ($scope.player === "player2"){
+          alert("You already own that space. Choose Another");}
+        else {
+          $scope.player = "player2";
+          moves++;};
+      }
+    }]);
+</script>  
+</body>
+</html>

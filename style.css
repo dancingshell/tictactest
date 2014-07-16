@@ -1,0 +1,40 @@
+body{
+  text-align: center;
+}
+
+#grid{
+  margin-top: 100px;
+}
+
+.box, .box.player{
+  margin:5px 5px;
+  background: pink;
+  display: inline-block;
+}
+
+.columnA{
+  border: 2px solid black;
+  width: 100px;
+  height: 100px;
+}
+
+.columnB{
+  border: 2px solid black;
+  width: 100px;
+  height: 100px;
+}
+
+.columnC{
+  border: 2px solid black;
+  width: 100px;
+  height: 100px;
+}
+
+.box.player1{
+  background: red;
+}
+
+.box.player2{
+  background: blue;
+}
+
