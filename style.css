@@ -1,5 +1,7 @@
 body{
   text-align: center;
+  background: black;
+  color:white;
 }
 
 #grid{
@@ -7,7 +9,7 @@ body{
 }
 
 .box, .box.player{
-  margin:5px 5px;
+  margin:5px;
   background: white;
   display: inline-block;
 }

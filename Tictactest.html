@@ -2,7 +2,6 @@
 <html ng-app="tictactoe">
 <head>
   <link rel="stylesheet" type="text/css" href="style.css">
-  
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script>
   <title>TicTacTest</title>
 </head>
@@ -25,42 +24,43 @@
       <div id="7" class="box columnC ng-class: results[7];" ng-class="box.player" ng-click="player_move($event)"></div>
       <div id="8" class="box columnC ng-class: results[8];" ng-click="player_move($event)"></div>
     </section>
+    <!-- Total Results: {{results}}<br/>
+    Player 1 Results: {{p1results}}<br/>
+    Player 2 Results: {{p2results}}<br/> -->
   </section>
-  {{results}}
+  
 <script type="text/javascript">
   angular.module("tictactoe", [])
     .controller('cube', ['$scope', function($scope) {
       var moves = 1; //no moves have been made
-      // $scope.player: box.player.id;
-      $scope.results = ['','','','','','','','','']
+      $scope.player = "Start";
+      $scope.results = ['','','','','','','','',''];
+      $scope.p1results = ['','','','','','','','',''];
+      $scope.p2results = ['','','','','','','','',''];
 
       $scope.player_move = function(anything) {
         var box_number = anything.target.id;
         if (moves %2!=0){//odds (player 1)
-          player_1(box_number);}
+          $scope.player = "Player 1";
+          play_game(box_number, "p1", "p2");}
         else {
-          player_2(box_number);}
+          $scope.player = "Player 2";
+          play_game(box_number, "p2", "p1");}
       };
 
-      var player_1 = function(box) {
-        console.log(box);
-        if ($scope.results[box] == "p2"){
-          alert("Player 2 already owns that space. Choose Another");}
-        else if ($scope.results[box] == "p1"){
+      var play_game = function(box, player, opponent) {
+        if ($scope.results[box] == opponent){
+          alert("Your opponent already owns that space. Choose Another");}
+        else if ($scope.results[box] == player){
           alert("You already own that space. Choose Another");}
         else {
-        $scope.results[box] = "p1";
-        moves ++;}
-      }
-
-      var player_2 = function(box) {
-        if ($scope.results[box] == "p1"){
-          alert("Player 1 already owns that space. Choose Another");}
-        else if ($scope.results[box] == "p2"){
-          alert("You already own that space. Choose Another");}
-        else {
-          $scope.results[box] = "p2";
-          moves++}
+          $scope.results[box] = player;
+          moves ++;
+          if ($scope.player == "Player 1"){
+            $scope.p1results[box] = player;}
+          else{
+            $scope.p2results[box] = player;}
+          }
       }
 
     }]);
