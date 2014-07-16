@@ -9,59 +9,60 @@
 <body>
   <section ng-controller="cube" id="grid">
     <section id="columnA" class="boxes">
-      <div id="A1 1" class="columnA row1 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="A2 1" class="columnA row2 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="A3 3" class="columnA row3 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="0" class="box columnA ng-class: results[0];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="1" class="box columnA ng-class: results[1];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="2" class="box columnA ng-class: results[2];" ng-class="box.player" ng-click="player_move($event)"></div>
     </section>
 
     <section id="columnB" class="boxes">
-      <div id="B1 4" class="columnB row1 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="B2 4" class="columnB row2 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="B3 6" class="columnB row3 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="3" class="box columnB ng-class: results[3];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="4" class="box columnB ng-class: results[4];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="5" class="box columnB ng-class: results[5];" ng-class="box.player" ng-click="player_move($event)"></div>
     </section>
 
     <section id="columnC" class="boxes">
-      <div id="C1 7" class="columnC row1 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="C2 8" class="columnC row2 box" ng-class="box.player" ng-click="player_move()"></div>
-      <div id="C3 9" class="columnC row2 box" ng-class="box.player" ng-click="player_move()"></div>
+      <div id="6" class="box columnC ng-class: results[6];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="7" class="box columnC ng-class: results[7];" ng-class="box.player" ng-click="player_move($event)"></div>
+      <div id="8" class="box columnC ng-class: results[8];" ng-click="player_move($event)"></div>
     </section>
   </section>
-  <p ng-bind="">
+  {{results}}
 <script type="text/javascript">
   angular.module("tictactoe", [])
     .controller('cube', ['$scope', function($scope) {
-      var moves = 0; //no moves have been made
-      // $scope.player: box.player;
+      var moves = 1; //no moves have been made
+      // $scope.player: box.player.id;
+      $scope.results = ['','','','','','','','','']
 
-      $scope.player_move = function() {
-        moves += 1;
+      $scope.player_move = function(anything) {
+        var box_number = anything.target.id;
         if (moves %2!=0){//odds (player 1)
-          player_1();}
+          player_1(box_number);}
         else {
-          player_2();}
+          player_2(box_number);}
       };
 
-      var player_1 = function() {
-        alert("player 1 again!");
-        if ($scope.player === "player2"){
+      var player_1 = function(box) {
+        console.log(box);
+        if ($scope.results[box] == "p2"){
           alert("Player 2 already owns that space. Choose Another");}
-        else if ($scope.player === "player1"){
+        else if ($scope.results[box] == "p1"){
           alert("You already own that space. Choose Another");}
         else {
-          $scope.player = "player1";
-          moves++;}
-      };
-
-      var player_2 = function() {
-        alert("player 1 again!");
-        if ($scope.player === "player1"){
-          alert("Player 1 already owns that space. Choose Another");}
-        else if ($scope.player === "player2"){
-          alert("You already own that space. Choose Another");}
-        else {
-          $scope.player = "player2";
-          moves++;};
+        $scope.results[box] = "p1";
+        moves ++;}
       }
+
+      var player_2 = function(box) {
+        if ($scope.results[box] == "p1"){
+          alert("Player 1 already owns that space. Choose Another");}
+        else if ($scope.results[box] == "p2"){
+          alert("You already own that space. Choose Another");}
+        else {
+          $scope.results[box] = "p2";
+          moves++}
+      }
+
     }]);
 </script>  
 </body>

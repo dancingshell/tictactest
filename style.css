@@ -8,33 +8,21 @@ body{
 
 .box, .box.player{
   margin:5px 5px;
-  background: pink;
+  background: white;
   display: inline-block;
 }
 
-.columnA{
+.columnA, .columnB, .columnC {
   border: 2px solid black;
   width: 100px;
   height: 100px;
 }
 
-.columnB{
-  border: 2px solid black;
-  width: 100px;
-  height: 100px;
+.p1{
+  background: #00CCCC;
 }
 
-.columnC{
-  border: 2px solid black;
-  width: 100px;
-  height: 100px;
-}
-
-.box.player1{
-  background: red;
-}
-
-.box.player2{
-  background: blue;
+.p2{
+  background: #FF9966;
 }
 
