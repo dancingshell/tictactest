@@ -4,11 +4,18 @@ body{
   font-family: helvetica;
 }
 
+.name_textbox{
+  border-radius: 30px;
+  padding-left: 10px;
+
+}
+
 #results, #players {
+  display: inline-block;
   position: fixed;
   top: 70px;
   right: 60px;
-  width: 200px;
+  width: 250px;
   height: 300px;
 }
 
@@ -34,10 +41,10 @@ body{
 }
 
 .box {
-  margin: 5px;
+  margin: 3px;
   background: white;
   display: inline-block;
-  border: 2px solid black;
+  border: 4px solid black;
   width: 100px;
   height: 100px;
 }
@@ -46,7 +53,25 @@ body{
   background: #00CCCC;
 }
 
-.p2{
+.p2 {
   background: #FF9966;
 }
+
+.box:hover {
+  border: 4px solid #00CCCC;
+}
+
+.p1:hover {
+  border: 4px solid #00CCCC;
+}
+
+.p2:hover{
+  border: 4px solid #FF9966;
+}
+
+.name_textbox:focus{
+  outline:none;
+
+}
+
 
