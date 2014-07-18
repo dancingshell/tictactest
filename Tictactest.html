@@ -10,88 +10,110 @@
   <section id="results">
     <div id="game_start" ng-show="player=='Start'">
       <h3>Start Game:</h3><hr/>
-      <h4 ng-show="phase<=1">Enter Your name:</h4>
-      <div id="getplayer1"><p>Player 1: {{player1_input}}</p><input ng-show="phase==0" type="text" ng-model="player1_input" class="name_textbox" placeholder="Player 1"></input>
+     <!--  <h4 ng-show="phase<=1">Enter Your name:</h4> -->
+      <div id="getplayer1"><p>Player 1: {{player1_input}}</p><input ng-enter="namePlayer(1)" ng-show="phase==0" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name"></input>
       <input ng-show="phase==0" type="button" value="Submit" ng-click="namePlayer(1)"></input></div>
 
-      <div id="getplayer2"><p>Player 2: {{player2_input}}</p><input ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Player 2"></input>
+      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p><input ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
       <input ng-show="phase<2" type="button" value="Submit" ng-click="namePlayer(2)"></input></div>
-      <h3 ng-show="phase>=2">Choose a Square</h3>
+      <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
     </div>
     <div id="results_box" ng-show="player!='Start'">
-        <h3>Next Turn:</h3><hr>
-        <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
+        <h3>Players:</h3><hr>
+        <div class="turn_count"><p>{{player1_input}}</p><div id="player_icon" class="p1"></div></div>
+        <div class="turn_count"><p>{{player2_input}}</p><div id="player_icon" class="p2"></div></div>
         <h3>Moves Remaining:</h3><hr>
-        <div class="turn_count"><p>{{player1_input}}: Some Number</p><div id="player_icon" class="p1"></div></div>
-        <div class="turn_count"><p>{{player2_input}}: Other Number</p><div id="player_icon" class="p2"></div></div>
+        <div class="turn_count"><p>{{player1_input}}: {{5-player1_moves}}</p><div id="player_icon" class="p1"></div></div>
+        <div class="turn_count"><p>{{player2_input}}: {{4-player2_moves}}</p><div id="player_icon" class="p2"></div></div>
     </div>
   </section>
 
    <section id="players">
     <div id="game_players" ng-show="player!='Start'">
-        <h3>Players:</h3><hr>
-        <div class="turn_count"><p>{{player1_input}}</p><div id="player_icon" class="p1"></div></div>
-        <div class="turn_count"><p>{{player2_input}}</p><div id="player_icon" class="p2"></div></div>
+
+      <h3>Next Turn:</h3><hr>
+        <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
+        
     </div>
   </section>
 
   <section  id="grid">
     <section id="columnA" class="boxes">
-      <div id="0" class="box columnA ng-class: results[0];" ng-click="player_move($event)"></div>
-      <div id="1" class="box columnA ng-class: results[1];" ng-click="player_move($event)"></div>
-      <div id="2" class="box columnA ng-class: results[2];" ng-click="player_move($event)"></div>
+      <div id="0" ng-class="{box2:moves%2==0}" class="box columnA ng-class: results[0]"  ng-click="player_move($event)"></div>
+      <div id="1" class="box columnA ng-class: results[1]" ng-click="player_move($event)"></div>
+      <div id="2" class="box columnA ng-class: results[2]" ng-click="player_move($event)"></div>
     </section>
 
     <section id="columnB" class="boxes">
-      <div id="3" class="box columnB ng-class: results[3];" ng-click="player_move($event)"></div>
-      <div id="4" class="box columnB ng-class: results[4];" ng-click="player_move($event)"></div>
-      <div id="5" class="box columnB ng-class: results[5];" ng-click="player_move($event)"></div>
+      <div id="3" class="box columnB ng-class: results[3]" ng-click="player_move($event)"></div>
+      <div id="4" class="box columnB ng-class: results[4]" ng-click="player_move($event)"></div>
+      <div id="5" class="box columnB ng-class: results[5]" ng-click="player_move($event)"></div>
     </section>
 
     <section id="columnC" class="boxes">
-      <div id="6" class="box columnC ng-class: results[6];" ng-click="player_move($event)"></div>
-      <div id="7" class="box columnC ng-class: results[7];" ng-click="player_move($event)"></div>
-      <div id="8" class="box columnC ng-class: results[8];" ng-click="player_move($event)"></div>
+      <div id="6" class="box columnC ng-class: results[6]" ng-click="player_move($event)"></div>
+      <div id="7" class="box columnC ng-class: results[7]" ng-click="player_move($event)"></div>
+      <div id="8" class="box columnC ng-class: results[8]" ng-click="player_move($event)"></div>
     </section>
-    {{}}
-    <!-- Total Results: {{results}}<br/>
+    Total Results: {{results}}<br/>
     Player 1 Results: {{p1results}}<br/>
-    Player 2 Results: {{p2results}}<br/> -->
+    Player 2 Results: {{p2results}}<br/>
   </section>
   
 <script type="text/javascript">
   angular.module("tictactoe", [])
     .controller('cube', ['$scope', function($scope) {
-      $scope.moves = 1; //no moves have been made
+      $scope.moves = 1; //no moves have been made (initialize at 1 so player 1 is odd and player 2 is even)
+      $scope.player1_moves=0;
+      $scope.player2_moves=0; 
       $scope.player = "Start";
       $scope.p_number = ""; //player is undefined initially
       $scope.results = ['','','','','','','','',''];
       $scope.p1results = ['','','','','','','','',''];
       $scope.p2results = ['','','','','','','','',''];
       $scope.phase = 0;
+      $scope.p1count= 0;
+      $scope.p2count= 0;
+
+
+      var winCombos = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+        ];
+
+//       angular.module('tictactoe').directive('ngEnter', function () {
+//     return function (scope, element, attrs) {
+//         element.bind("keydown keypress", function (event) {
+//             if(event.which === 13) {
+//                 scope.$apply(function (){
+//                     scope.$eval(attrs.ngEnter);
+//                 });
+ 
+//                 event.preventDefault();
+//             }
+//         });
+//     };
+// });
+
+     
+
     
       $scope.namePlayer = function(player){
         console.log("test + player");
-      if (player == 1) {
-        // if (player1_input=""){
-        //   player1_input = "Player 1";
-        // }
-        $scope.phase +=1;}
-      else {
-        // if (player_input=""){
-        //   player1_input = "Player 1";
-        // }
-        $scope.phase +=2;}
-        // if ($scope.phase ==3){
-        //   console.log($scope.phase);
-        //   alert("Great! Let's play " + $scope.player1_input + " and " + $scope.player2_input) + ".";}
-      
-      
+        if (player == 1) {
+          $scope.phase +=1;}
+        else {
+          $scope.phase +=2;}
       }
 
       $scope.player_move = function(box_clicked) {
         var box_number = box_clicked.target.id;
-        console.log("x" + $scope.player2_input + "x");
         if ($scope.player1_input==undefined){
           $scope.player1_input = "Player 1";
         }
@@ -111,27 +133,130 @@
 
       var play_game = function(box, player, opponent) {
         if ($scope.results[box] == opponent){
-          alert("Your opponent already owns that space. Choose Another");}
+          alert("Your opponent already owns that space. Choose Another");
+        }
         else if ($scope.results[box] == player){
-          alert("You already own that space. Choose Another");}
+          alert("You already own that space. Choose Another");
+        }
         else {
+
           $scope.results[box] = player;
           $scope.moves ++;
           if ($scope.player == "Player 1"){
+            $scope.player1_moves++;
             $scope.next_turn = $scope.player2_input;
-            $scope.p1results[box] = player;}
+            $scope.p1results[box] = player;
+          }
           else{
+            $scope.player2_moves++;
             $scope.p2results[box] = player;
-            $scope.next_turn = $scope.player1_input;}
-        
-          // var i = 0;
-          // while (i< 9) {
-          //   if($scope.p1results[i] != ""){
-          //     $scope.p1count[i] = "x";
-          //     i++;}
-          // }
+            $scope.next_turn = $scope.player1_input;
+          }
         }
-      }
+        // if $scope.p1results.length; i++) {
+        //     if ($scope.p1results[i]=="p1"){
+        //       $scope.p1count++;
+        //       console.log($scope.p1count +" test");}
+        //   }
+        // }
+
+      // if ($scope.moves > 5) {
+      //   $scope.winner= "";
+      //   do {
+      //     for (var i = 0; i < $scope.results.length; i++) {
+      //       // for ($scope.winCombos.length < 9; offset++) {
+      //         var offset = 0;
+              
+      //           if ($scope.results[$scope.winCombos[i][offset]] == $scope.results[$scope.winCombos[i+1][offset+1]]){
+      //             alert(possible_winner);
+      //             var possible_winner = $scope.results[$scope.winCombos[i+1][offset+1]];
+      //             if (possible_winner == $scope.results[$scope.winCombos[i+2][offset+2]]){
+      //               $scope.winner = possible_winner;
+      //               alert("you Win" + $scope.winner);}
+      //               break;
+      //             i++;
+      //           }}}
+      //           while ($scope.winner!="");
+              
+
+      //       }
+          
+      //   }
+//         if ($scope.moves > 5) {
+//           $scope.winner= "";
+//           while ($scope.winner==""){
+//             for (var i = 0; i < $scope.results.length; i++){
+//               for (var w = 0; w < $scope.winCombos.length; w++){
+//                 // for (var w = 0; w< $scope.winCombos[w]length < 9; offset++){
+//                 var offset = 0;
+//                  console.log($scope.results[$scope.winCombos[w][offset]]);
+//                 $scope.possible_winner = $scope.results[$scope.winCombos[w][offset]]; 
+
+//                 // alert(possible_winner);//first digit
+//                 while ($scope.possible_winner == $scope.results[$scope.winCombos[w][offset]]){
+//                   offset+=1;
+//                   if (offset==2){
+//                     $scope.winner == $scope.possible_winner;
+//                     console.log("you win!")
+//                     break;
+//                     }
+//                 }
+//              }
+//             }alert("You win, " + $scope.winner) +".";
+//           }
+//         }
+    
+// }
+      // var i = 0;
+      // var offset = 0;
+      // // for (var i = 0; i < Things.length; i++) {
+      // //   Things[i]
+      // // };
+      // if ($scope.results[$scope.winCombos[i][offset]] == $scope.results[$scope.winCombos[i][offset+1]]){
+      //   var possible_winner = $scope.results[$scope.winCombos[i][offset]];
+      //   offset+=2;
+      //   console.log(offset);
+      //   console.log(possible_winner);
+      //   if (possible_winner == $scope.results[$scope.winCombos[i][offset]] ){
+      //     alert("You won, " + possible_winner);}}
+      // var w= 0;
+      // for (var i = 0; $scope.winCombos.length > i ; i++){
+      //   var win_count = 0;
+      //   while(win_count != 2){
+      //    if ($scope.results[$scope.winCombos[i][w]] == $scope.results[$scope.winCombos[i][w+1]]){
+      //     var possible_winner = $scope.results[$scope.winCombos[i][w]];
+      //     w+=2;
+      //     win_count++
+      //     console.log(possible_winner);
+      //     if (possible_winner == $scope.results[$scope.winCombos[i][w]]){
+      //       win_count++
+      //       console.log(possible_winner);}
+      //     }
+      //     alert("You win, " + possible_winner +"!");
+      //     // console.log(win_count);
+      //     // win_count++;
+      //     // w++;
+      //     // if (win_count==2) {
+            
+      //     }
+      // };
+
+
+
+      for (var i = 0; i < winCombos.length; i++){
+        var combo = winCombos[i];
+        console.log($scope.results[combo[1]]== $scope.results[combo[0]]);
+        if (($scope.results[combo[0]]==$scope.results[combo[1]]) && ($scope.results[combo[1]]==$scope.results[combo[2]]) && ($scope.results[combo[0]]!="")) {
+          alert("you win, " + $scope.results[combo[0]] + "!");
+        }
+          
+    }
+
+
+}
+
+      
+
 
     }]);
 </script>  
