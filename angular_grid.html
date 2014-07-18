@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html ng-app="tictactoe">
 <head>
@@ -40,28 +42,22 @@
   </section>
 
   <section  id="grid">
-    <section id="columnA" class="boxes">
-      <div id="0" ng-class"{results[0]=}" class="box columnA"  ng-click="player_move($event)"></div>
-      <div id="1" class="box columnA ng-class: results[1]" ng-click="player_move($event)"></div>
-      <div id="2" class="box columnA ng-class: results[2]" ng-click="player_move($event)"></div>
-    </section>
-
-    <section id="columnB" class="boxes">
-      <div id="3" class="box columnB ng-class: results[3]" ng-click="player_move($event)"></div>
-      <div id="4" class="box columnB ng-class: results[4]" ng-click="player_move($event)"></div>
-      <div id="5" class="box columnB ng-class: results[5]" ng-click="player_move($event)"></div>
-    </section>
-
-    <section id="columnC" class="boxes">
-      <div id="6" class="box columnC ng-class: results[6]" ng-click="player_move($event)"></div>
-      <div id="7" class="box columnC ng-class: results[7]" ng-click="player_move($event)"></div>
-      <div id="8" class="box columnC ng-class: results[8]" ng-click="player_move($event)"></div>
-    </section>
+    <div class="boxes" 
+      x-ng-repeat="x in board track by $index"
+      x-ng-click="player_move($index);" 
+      x-ng-class="{p1:results[$index]==p1, p2:results[$index]==p2}">
+    </div>
   </section>
+
+
+
   
 <script type="text/javascript">
   angular.module("tictactoe", [])
     .controller('cube', ['$scope', function($scope) {
+
+      $scope.board = [0,0,0,0,0,0,0,0,0];
+
       $scope.moves = 1; //no moves have been made (initialize at 1 so player 1 is odd and player 2 is even)
       $scope.player1_moves=0;
       $scope.player2_moves=0; 

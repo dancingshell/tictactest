@@ -7,7 +7,6 @@ body{
 .name_textbox{
   border-radius: 30px;
   padding-left: 10px;
-
 }
 
 #results, #players {
@@ -37,7 +36,20 @@ body{
 #grid{
   margin-top: 100px;
   text-align: center;
-  
+  border: 4px solid black;
+}
+
+#turn1, #turn2{
+  font-size: 35px;
+  margin: 0px 17px;
+}
+
+.turn_count #turn1 {
+  color: #00CCCC;
+}
+
+.turn_count #turn2 {
+  color: #FF9966;
 }
 
 .box {
@@ -57,7 +69,7 @@ body{
   background: #FF9966;
 }
 
-.box:hover {
+/*box:hover {
   border: 4px solid #00CCCC;
 }
 
@@ -72,6 +84,10 @@ body{
 .p2:hover{
   border: 4px solid #FF9966;
 }
+
+.p1 #player_icon:hover{
+  border: 2px solid black;
+}*/
 
 .name_textbox:focus{
   outline:none;
