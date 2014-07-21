@@ -8,19 +8,22 @@
   <script type="text/javascript" src="angular.min.js"></script>
   <title>TicTacTest</title>
 </head>
-<body ng-controller="cubeController">
+<body ng-controller="cubeController" onLoad="document.get_name.player_1.focus()">
 
   <section id="results">
+    
     <div id="game_start" ng-show="player=='Start'">
       <h3>Start Game:</h3><hr/>
      <!--  <h4 ng-show="phase<=1">Enter Your name:</h4> -->
+     <form name="get_name">
       <div id="getplayer1"><p>Player 1: {{player1_input}}</p>
-        <input ng-enter="namePlayer(1)" ng-show="phase==0" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name"></input>
-        <input ng-show="phase==0" type="button" value="Submit" ng-click="namePlayer(1)"></input>
+        <input ng-show="phase==0" name="player_1" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" ></input>
       </div>
 
-      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p><input ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
-      <input ng-show="phase<2" type="button" value="Submit" ng-click="namePlayer(2)"></input></div>
+      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p>
+        <input name="player_2" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
+      </div>
+    </form>
       <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
     </div>
     <div id="results_box" ng-show="player!='Start'">
@@ -41,34 +44,30 @@
         
     </div>
   </section>
-{{results}}
-  <section  id="grid">
-    <div class="box"
-        x-ng-repeat="(xIndex,x) in board"
-        x-ng-click="player_move($index)"
-        x-ng-class="{x.selected:true, p2:p2_clicked}, ">
-        <div id="{{item.id}}" ng-init="init(item.value)"></div>
-      {{item}}
-    </div>
-  </section>
+ {{results}}
+<div id="grid"> 
+<div class="box"
+  ng-repeat="row in cells track by $index"
+  ng-click="player_move(row.id)"
+  ng-class="{player_class: true}">
+</div>
+</div>
 
-
-
-  
+ 
 <script type="text/javascript">
   angular.module("tictactoe", [])
     .controller('cubeController', ['$scope', function($scope) {
 
-      $scope.board = [
-        {id:0, value:0},
-        {id:1, value:1},
-        {id:2, value:2},
-        {id:3, value:3},
-        {id:4, value:4},
-        {id:5, value:5},
-        {id:6, value:6},
-        {id:7, value:7},
-        {id:8, value:8},];
+      $scope.cells = [
+        {id:0},
+        {id:1},
+        {id:2},
+        {id:3},
+        {id:4},
+        {id:5},
+        {id:6},
+        {id:7},
+        {id:8},];
 
 
 
@@ -106,7 +105,8 @@
 
       $scope.player_move = function(box_clicked) {
         $scope.box_clicked = box_clicked;
-
+        $scope.player_class = results[box_clicked];
+        console.log($scope.box_clicked);
         if ($scope.player1_input==undefined) {
           $scope.player1_input = "Player 1";
         }
@@ -170,7 +170,22 @@
 
       }     
 }
-}]);
+}])
+.directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEnter, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+
+;
 </script>  
 </body>
 </html>

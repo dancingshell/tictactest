@@ -4,21 +4,25 @@
   <link rel="stylesheet" type="text/css" href="style.css">
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script> -->
   <script type="text/javascript"  src="angular.min.js"></script>
+ 
   <title>TicTacTest</title>
 </head>
-<body ng-controller="cube">
+<body ng-controller="cube" onLoad="document.get_name.player_1.focus()">
 
   <section id="results">
+    
     <div id="game_start" ng-show="player=='Start'">
       <h3>Start Game:</h3><hr/>
      <!--  <h4 ng-show="phase<=1">Enter Your name:</h4> -->
+     <form name="get_name">
       <div id="getplayer1"><p>Player 1: {{player1_input}}</p>
-        <input ng-enter="namePlayer(1)" ng-show="phase==0" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name"></input>
-        <input ng-show="phase==0" type="button" value="Submit" ng-click="namePlayer(1)"></input>
+        <input ng-show="phase==0" name="player_1" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" ></input>
       </div>
 
-      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p><input ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
-      <input ng-show="phase<2" type="button" value="Submit" ng-click="namePlayer(2)"></input></div>
+      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p>
+        <input name="player_2" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
+      </div>
+    </form>
       <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
     </div>
     <div id="results_box" ng-show="player!='Start'">
@@ -85,13 +89,16 @@
         [0,4,8],
         [2,4,6]
         ];
-
+        
       $scope.namePlayer = function(player){
         console.log("test + player");
         if (player == 1) {
-          $scope.phase +=1;}
+          $scope.phase +=1;
+          console.log("test for player 2");
+          document.get_name.player_2.focus();
+        }
         else {
-          $scope.phase +=2;}
+          $scope.phase += 2;}
       }
 
       $scope.player_move = function(box_clicked) {
@@ -121,7 +128,6 @@
           alert("You already own that space. Choose Another");
         }
         else {
-
           $scope.results[box] = player;
           $scope.moves ++;
           if ($scope.player == "Player 1"){
@@ -129,42 +135,77 @@
             $scope.next_turn = $scope.player2_input;
 
           }
-          else{
+          else {
             $scope.player2_moves++;
             $scope.next_turn = $scope.player1_input;
           }
+          console.log($scope.moves);
+
 
           if ($scope.moves>5){
+            var winner_declared = false;
             for (var i = 0; i < winCombos.length; i++){ //win logic
               var combo = winCombos[i];
               if (($scope.results[combo[0]]==$scope.results[combo[1]]) && ($scope.results[combo[1]]==$scope.results[combo[2]]) && ($scope.results[combo[0]]!="")) {
                 $scope.winning_array = winCombos[i];
-                  if ($scope.results[combo[0]] == "p1"){
-                    win_sequence($scope.player1_input, $scope.winning_array);
-                  }
-                  else if ($scope.results[combo[0]] == "p2"){
-                    win_sequence($scope.player2_input, $scope.winning_array);
-                  }
-                  else{
-                    alert("Catsgame!");
-                  }
+                if ($scope.results[combo[0]] == "p1"){
+                  winner_declared = true;
+                  win_sequence($scope.player1_input, $scope.winning_array);
+                }
+                else if ($scope.results[combo[0]] == "p2"){
+                  winner_declared = true;
+                  win_sequence($scope.player2_input, $scope.winning_array);
+                }
+              }
+              else if (winner_declared == false && $scope.moves == 10) {
+                alert("Catsgame!");
+                break;
               }
             }
           }
+        }
       } 
 
       function win_sequence(winner, win_array){
-        $scope.win_class=["","","","","","","","",""]
+        $scope.win_class=["","","","","","","","",""];
         $scope.win_class[win_array[0]] == true;
         $scope.win_class[win_array[1]] == true;
         $scope.win_class[win_array[2]] == true;
 
         alert("You win, " + winner + "!");
+        var play_again = confirm("Play another game");
+        if (play_again === true){
+          game_reset();
+        }
+        else {
+          alert("Thanks for playing");
+        }
       }
 
-    
-}
-}]);
+      $scope.game_reset = function() {
+
+      }
+
+      
+
+  
+
+}])
+
+.directive('ngEnter', function() {
+        return function(scope, element, attrs) {
+            element.bind("keydown keypress", function(event) {
+                if(event.which === 13) {
+                    scope.$apply(function(){
+                        scope.$eval(attrs.ngEnter, {'event': event});
+                    });
+
+                    event.preventDefault();
+                }
+            });
+        };
+    });
+;
 </script>  
 </body>
 </html>
