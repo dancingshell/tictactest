@@ -40,16 +40,16 @@
     <div id="game_players" ng-show="player!='Start'">
 
       <h3>Next Turn:</h3><hr>
-        <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
+        <p>{{next_turn}}</p><div id="player_icon" class="cell" ng-class:"{p_number}"></div>
         
     </div>
   </section>
  {{results}}
 <div id="grid"> 
 <div class="box"
-  ng-repeat="row in cells track by $index"
-  ng-click="player_move(row.id)"
-  ng-class="{player_class: true}">
+  ng-repeat="cell in cellz track by $index"
+  ng-click="player_move(cell)"
+  ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2'}">
 </div>
 </div>
 
@@ -58,16 +58,16 @@
   angular.module("tictactoe", [])
     .controller('cubeController', ['$scope', function($scope) {
 
-      $scope.cells = [
-        {id:0},
-        {id:1},
-        {id:2},
-        {id:3},
-        {id:4},
-        {id:5},
-        {id:6},
-        {id:7},
-        {id:8},];
+      $scope.cellz = [
+        {idee:0, owner:null},
+        {idee:1, owner:null},
+        {idee:2, owner:null},
+        {idee:3, owner:null},
+        {idee:4, owner:null},
+        {idee:5, owner:null},
+        {idee:6, owner:null},
+        {idee:7, owner:null},
+        {idee:8, owner:null}];
 
 
 
@@ -80,7 +80,6 @@
       $scope.phase = 0;
       $scope.p1count= 0;
       $scope.p2count= 0;
-
       var winCombos = [
         [0,1,2],
         [3,4,5],
@@ -93,7 +92,6 @@
         ];
 
       $scope.namePlayer = function(player){
-        console.log("test + player");
         if (player == 1) {
           $scope.phase +=1;
         }
@@ -102,11 +100,11 @@
         }
       }
 
+      // {p1: changeClass(p1, row.id)}
+  
 
-      $scope.player_move = function(box_clicked) {
-        $scope.box_clicked = box_clicked;
-        $scope.player_class = results[box_clicked];
-        console.log($scope.box_clicked);
+      $scope.player_move = function(cell) {
+
         if ($scope.player1_input==undefined) {
           $scope.player1_input = "Player 1";
         }
@@ -117,37 +115,38 @@
         if ($scope.moves %2!=0) { //odds (player 1)
           $scope.player = "Player 1";
           $scope.p_number = "p2";
-          play_game($scope.box_clicked, "p1", "p2");
+          play_game(cell, "p1", "p2");
         }
         else { //even (player 1)
           $scope.player = "Player 2";
           $scope.p_number = "p1";
-          play_game($scope.box_clicked, "p2", "p1");
+          play_game(cell, "p2", "p1");
         }
       }
 
-      var play_game = function(box, player, opponent) {
-        if ($scope.results[box] == opponent){
+      var play_game = function(cell, player, opponent) {
+        console.log(cell.idee);
+        if ($scope.results[cell.idee] == opponent){
           alert("Your opponent already owns that space. Choose Another");
         }
-        else if ($scope.results[box] == player){
+        else if ($scope.results[cell.idee] == player){
           alert("You already own that space. Choose Another");
         }
         else {
-          $scope.results[box] = player;
-          // console.log(box);
-          // console.log($scope.results[box]);
+          $scope.results[cell.idee] = player;
+
           $scope.moves ++;
           if ($scope.player == "Player 1") {
             $scope.player1_moves++;
             $scope.next_turn = $scope.player2_input;
-            $scope.p1_clicked = true;
+            cell.owner = player;
           }
           else {
             $scope.player2_moves++;
             $scope.next_turn = $scope.player1_input;
+            cell.owner = player;
           }
-        $scope.p1p2 = $scope.results[box];
+        // $scope.p1p2 = $scope.results[box];
 
           if ($scope.moves>5) {
             for (var i = 0; i < winCombos.length; i++) { //win logic
