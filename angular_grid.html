@@ -40,16 +40,15 @@
     <div id="game_players" ng-show="player!='Start'">
 
       <h3>Next Turn:</h3><hr>
-        <p>{{next_turn}}</p><div id="player_icon" class="cell" ng-class:"{p_number}"></div>
+        <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
         
     </div>
   </section>
- {{results}}
 <div id="grid"> 
 <div class="box"
   ng-repeat="cell in cellz track by $index"
   ng-click="player_move(cell)"
-  ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2'}">
+  ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0}">
 </div>
 </div>
 
@@ -125,7 +124,6 @@
       }
 
       var play_game = function(cell, player, opponent) {
-        console.log(cell.idee);
         if ($scope.results[cell.idee] == opponent){
           alert("Your opponent already owns that space. Choose Another");
         }

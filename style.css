@@ -70,7 +70,7 @@ body{
   background: #FF9966;
 }
 
-/*box:hover {
+.box:hover {
   border: 4px solid #00CCCC;
 }
 
@@ -88,7 +88,7 @@ body{
 
 .p1 #player_icon:hover{
   border: 2px solid black;
-}*/
+}
 
 .name_textbox:focus{
   outline:none;
