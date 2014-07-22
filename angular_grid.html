@@ -8,20 +8,21 @@
   <script type="text/javascript" src="angular.min.js"></script>
   <title>TicTacTest</title>
 </head>
-<body ng-controller="cubeController" onLoad="document.get_name.player_1.focus()">
-
+<body ng-controller="cubeController">
+  <header>
+    <p class="winner_text" ng-show="winner">You won, {{winner}}!</p>
+  </header>
   <section id="results">
     
     <div id="game_start" ng-show="player=='Start'">
       <h3>Start Game:</h3><hr/>
-     <!--  <h4 ng-show="phase<=1">Enter Your name:</h4> -->
      <form name="get_name">
       <div id="getplayer1"><p>Player 1: {{player1_input}}</p>
-        <input ng-show="phase==0" name="player_1" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" ></input>
+        <input ng-show="phase==0" id="player_1" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" autofocus></input>
       </div>
 
       <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p>
-        <input name="player_2" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
+        <input id="p2_input" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
       </div>
     </form>
       <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
@@ -36,76 +37,75 @@
     </div>
   </section>
 
-   <section id="players">
+  <section id="players">
     <div id="game_players" ng-show="player!='Start'">
-
       <h3>Next Turn:</h3><hr>
-        <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
-        
+      <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
     </div>
   </section>
-<div id="grid"> 
-<div class="box"
-  ng-repeat="cell in cellz track by $index"
-  ng-click="player_move(cell)"
-  ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0}">
-</div>
-</div>
 
- 
-<script type="text/javascript">
-  angular.module("tictactoe", [])
+  <div id="grid">
+  <div class="box"
+    ng-repeat="cell in cellz track by $index"
+    ng-click="player_move(cell)"
+    ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
+  </div>
+  </div>
+
+  <script type="text/javascript">
+    angular.module("tictactoe", [])
     .controller('cubeController', ['$scope', function($scope) {
 
-      $scope.cellz = [
-        {idee:0, owner:null},
-        {idee:1, owner:null},
-        {idee:2, owner:null},
-        {idee:3, owner:null},
-        {idee:4, owner:null},
-        {idee:5, owner:null},
-        {idee:6, owner:null},
-        {idee:7, owner:null},
-        {idee:8, owner:null}];
-
-
-
-      $scope.moves = 1; //no moves made (initialize at 1 so player 1 is odd / player 2 is even)
-      $scope.player1_moves=0;
-      $scope.player2_moves=0; 
-      $scope.player = "Start";
-      $scope.p_number = ""; //player is undefined initially
-      $scope.results = ['','','','','','','','',''];
-      $scope.phase = 0;
-      $scope.p1count= 0;
-      $scope.p2count= 0;
       var winCombos = [
-        [0,1,2],
-        [3,4,5],
-        [6,7,8],
-        [0,3,6],
-        [1,4,7],
-        [2,5,8],
-        [0,4,8],
-        [2,4,6]
-        ];
+          [0,1,2],
+          [3,4,5],
+          [6,7,8],
+          [0,3,6],
+          [1,4,7],
+          [2,5,8],
+          [0,4,8],
+          [2,4,6]
+          ];
+
+      $scope.init = function() {
+        $scope.cellz = [
+          {idee:0, owner:null, win:null},
+          {idee:1, owner:null, win:null},
+          {idee:2, owner:null, win:null},
+          {idee:3, owner:null, win:null},
+          {idee:4, owner:null, win:null},
+          {idee:5, owner:null, win:null},
+          {idee:6, owner:null, win:null},
+          {idee:7, owner:null, win:null},
+          {idee:8, owner:null, win:null}];
+
+        $scope.moves = 1; //no moves made (initialize at 1 so player 1 is odd / player 2 is even)
+        $scope.player1_moves=0;
+        $scope.player2_moves=0; 
+        $scope.player = "Start";
+        $scope.p_number = ""; //player is undefined initially
+        $scope.results = ['','','','','','','','',''];
+        $scope.phase = 0;
+        $scope.p1count= 0;
+        $scope.p2count= 0;
+        $scope.winner = "";
+      }
+      
 
       $scope.namePlayer = function(player){
         if (player == 1) {
           $scope.phase +=1;
+          document.getElementById("player_1").blur();
+          document.getElementById("player_2").focus();
         }
-        else { 
+        else {  
           $scope.phase +=2;
-        }
+        }      
       }
 
-      // {p1: changeClass(p1, row.id)}
-  
-
       $scope.player_move = function(cell) {
-
         if ($scope.player1_input==undefined) {
-          $scope.player1_input = "Player 1";
+          $scope.player1_input = "Player 1"; 
         }
         if ($scope.player2_input==undefined){
           $scope.player2_input = "Player 2";
@@ -146,27 +146,49 @@
           }
         // $scope.p1p2 = $scope.results[box];
 
-          if ($scope.moves>5) {
-            for (var i = 0; i < winCombos.length; i++) { //win logic
+           if ($scope.moves>5){
+            var winner_declared = false;
+            for (var i = 0; i < winCombos.length; i++){ //win logic
               var combo = winCombos[i];
               if (($scope.results[combo[0]]==$scope.results[combo[1]]) && ($scope.results[combo[1]]==$scope.results[combo[2]]) && ($scope.results[combo[0]]!="")) {
-                if ($scope.results[combo[0]]) {
-                  if ($scope.results[combo[0]] =="p1") {
-                    alert("You win, " + $scope.player1_input + "!");
-                  }
-                  else{
-                    alert("You win, " + $scope.player1_input + "!");
-                  }
+                $scope.winning_array = winCombos[i];
+                if ($scope.results[combo[0]] == "p1"){
+                  winner_declared = true;
+                  $scope.winner = $scope.player1_input;
+                  win_sequence($scope.player1_input, $scope.winning_array);
                 }
+                else if ($scope.results[combo[0]] == "p2"){
+                  winner_declared = true;
+                  $scope.winner = $scope.player2_input;
+                  win_sequence($scope.player2_input, $scope.winning_array);
+                }
+              }
+              else if (winner_declared == false && $scope.moves == 10) {
+                alert("Catsgame!");
+                break;
               }
             }
           }
-          if ($scope.moves==10) {
-            alert("Catsgame!");
-          }
+        }
+      } 
 
-      }     
-}
+      function win_sequence(winner, win_array) {
+        $scope.cellz[win_array[0]].win = "win";
+        $scope.cellz[win_array[1]].win = "win";
+        $scope.cellz[win_array[2]].win = "win";
+      
+        var play_again = confirm("Play another game");
+        if (play_again === true){
+          console.log("I want to play again");
+          $scope.init();
+        }
+        else {
+          // alert("Thanks for playing");
+        }
+      }
+
+      $scope.init();
+
 }])
 .directive('ngEnter', function() {
         return function(scope, element, attrs) {
