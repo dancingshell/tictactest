@@ -4,8 +4,7 @@
 <html ng-app="tictactoe">
 <head>
   <link rel="stylesheet" type="text/css" href="style.css"/>
-   <!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js" type="text/javascript"></script> -->
-  <script type="text/javascript" src="angular.min.js"></script>
+  <script type="text/javascript" src="angular.js"></script>
   <title>TicTacTest</title>
 </head>
 <body ng-controller="cubeController">
@@ -66,17 +65,23 @@
   </section>
 
   <div id="grid">
-    <div class="box"
+    <div class="box" id="tile{{$index}}"
       ng-repeat="cell in cellz track by $index"
-      ng-click="player_move(cell)"
+      ng-mouseup="player_move(cell)"
       ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
     </div>
     <p class="winner_text" ng-click="init()" ng-show="winner || catsgame">Play again?</p>
+<br>
+    <div class="drag" drag
+      ng-repeat="i in items track by $index"
+      ng-class="{p1: i.player=='1', p2: i.player=='2'}">
+    </div>
   </div>
 
   <script type="text/javascript">
     angular.module("tictactoe", [])
     .controller('cubeController', ['$scope', function($scope) {
+
 
       var winCombos = [
           [0,1,2],
@@ -93,6 +98,29 @@
       $scope.p2_wins = 0;
 
       $scope.init = function() {
+
+        $scope.dropped = [];
+        $scope.items = [
+          {id: 0, player: 1}, 
+          {id: 1, player: 1},
+          {id: 2, player: 1},
+          {id: 3, player: 1},
+          {id: 4, player: 1}, 
+          {id: 5, player: 1},
+          {id: 6, player: 1},
+          {id: 7, player: 1},
+          {id: 8, player: 1}
+          // {id: 0, player: 2}, 
+          // {id: 1, player: 2},
+          // {id: 2, player: 2},
+          // {id: 3, player: 2},
+          // {id: 4, player: 2}, 
+          // {id: 5, player: 2},
+          // {id: 6, player: 2},
+          // {id: 7, player: 2},
+          // {id: 8, player: 2}
+      ];
+
         $scope.cellz = [
           {idee:0, owner:null, win:null},
           {idee:1, owner:null, win:null},
@@ -127,6 +155,9 @@
       }
 
       $scope.player_move = function(cell) {
+        var rect = document.getElementById("tile"+cell.idee).getBoundingClientRect();
+        console.log(rect);
+        console.log("test");
         if ($scope.player1_input==undefined) {
           $scope.player1_input = "Player 1"; 
         }
@@ -203,6 +234,71 @@
         $scope.cellz[win_array[2]].win = "win";
       }
 
+      
+
+      $scope.simulate = function(element, eventName)
+{
+    var options = extend(defaultOptions, arguments[2] || {});
+    var oEvent, eventType = null;
+
+    for (var name in eventMatchers)
+    {
+        if (eventMatchers[name].test(eventName)) { eventType = name; break; }
+    }
+
+    if (!eventType)
+        throw new SyntaxError('Only HTMLEvents and MouseEvents interfaces are supported');
+
+    if (document.createEvent)
+    {
+        oEvent = document.createEvent(eventType);
+        if (eventType == 'HTMLEvents')
+        {
+            oEvent.initEvent(eventName, options.bubbles, options.cancelable);
+        }
+        else
+        {
+            oEvent.initMouseEvent(eventName, options.bubbles, options.cancelable, document.defaultView,
+            options.button, options.pointerX, options.pointerY, options.pointerX, options.pointerY,
+            options.ctrlKey, options.altKey, options.shiftKey, options.metaKey, options.button, element);
+        }
+        element.dispatchEvent(oEvent);
+    }
+    else
+    {
+        options.clientX = options.pointerX;
+        options.clientY = options.pointerY;
+        var evt = document.createEventObject();
+        oEvent = extend(evt, options);
+        element.fireEvent('on' + eventName, oEvent);
+    }
+    return element;
+  }
+
+      function extend(destination, source) {
+          for (var property in source)
+            destination[property] = source[property];
+          return destination;
+      }
+
+      var eventMatchers = {
+          'HTMLEvents': /^(?:load|unload|abort|error|select|change|submit|reset|focus|blur|resize|scroll)$/,
+          'MouseEvents': /^(?:click|dblclick|mouse(?:down|up|over|move|out))$/
+      }
+      var defaultOptions = {
+          pointerX: 0,
+          pointerY: 0,
+          button: 0,
+          ctrlKey: false,
+          altKey: false,
+          shiftKey: false,
+          metaKey: false,
+          bubbles: true,
+          cancelable: true
+      }
+
+
+
       $scope.init();
 
 }])
@@ -218,7 +314,49 @@
                 }
             });
         };
-    });
+    })
+
+.directive("drag", ["$document", function($document){
+    return function(s, e, attr){
+      var start_x = 0,
+          start_y = 0,
+          x = 0,
+          y = 0;
+
+      e.css({
+        position: "relative",
+        backgroundColor: 'yellow',
+        padding: "10px",
+      });
+
+      e.on("mousedown", function(event){
+        console.log(event);
+        event.preventDefault();
+        start_x = event.pageX - x;
+        start_y = event.pageY - y;
+        $document.on("mousemove", mousemove);
+        $document.on("mouseup", mouseup);
+      });
+
+      function mousemove(event) {
+        x = event.pageX - start_x;
+        y = event.pageY - start_y;
+        e.css({
+          top: y + "px",
+          left: x + "px"
+        });
+      }
+
+      function mouseup() {
+        $document.off("mousemove", mousemove);
+        $document.off("mouseup", mouseup);
+        $scope.simulate(document.getElementById("grid"), "click", { pointerX: 123, pointerY: 321 });
+        console.log(event);
+      }
+
+    }
+
+}])
 
 ;
 </script>  
