@@ -11,45 +11,67 @@
 <body ng-controller="cubeController">
   <header>
     <p class="winner_text" ng-show="winner">You won, {{winner}}!</p>
+    <p class="winner_text" ng-show="catsgame">Drat, a catsgame.</p>
   </header>
   <section id="results">
-    
     <div id="game_start" ng-show="player=='Start'">
       <h3>Start Game:</h3><hr/>
-     <form name="get_name">
-      <div id="getplayer1"><p>Player 1: {{player1_input}}</p>
-        <input ng-show="phase==0" id="player_1" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" autofocus></input>
-      </div>
-
-      <div ng-hide="phase==0" id="getplayer2"><p>Player 2: {{player2_input}}</p>
-        <input id="p2_input" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
-      </div>
-    </form>
+      <form id="get_name">
+        <div>
+          <p>Player 1: {{player1_input}}</p>
+          <input ng-show="phase==0" id="p1_input" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" autofocus></input>
+        </div>
+        <div ng-hide="phase==0" id="getplayer2">
+          <p>Player 2: {{player2_input}}</p>
+          <input id="p2_input" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
+        </div>
+      </form>
       <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
     </div>
-    <div id="results_box" ng-show="player!='Start'">
-        <h3>Players:</h3><hr>
-        <div class="turn_count"><p>{{player1_input}}</p><div id="player_icon" class="p1"></div></div>
-        <div class="turn_count"><p>{{player2_input}}</p><div id="player_icon" class="p2"></div></div>
-        <h3>Moves Remaining:</h3><hr>
-        <div class="turn_count"><p id="turn1">{{5-player1_moves}}</p></div>
-        <div class="turn_count"><p id="turn2">{{4-player2_moves}}</p></div>
+
+    <div ng-show="player!='Start'">
+      <h3>Next Turn:</h3><hr>
+      <p>{{next_turn}}</p>
+      <div class="player_icon ng-class:p_number"></div>
+      <h3>Moves Remaining:</h3><hr>
+      <div class="turn_count">
+        <p id="turn1">{{5-player1_moves}}</p>
+      </div>
+      <div class="turn_count">
+        <p id="turn2">{{4-player2_moves}}</p>
+      </div>
     </div>
   </section>
 
   <section id="players">
-    <div id="game_players" ng-show="player!='Start'">
-      <h3>Next Turn:</h3><hr>
-      <p>{{next_turn}}</p><div id="player_icon" class="box ng-class:p_number"></div>
+    <div ng-show="player!='Start'">
+      <h3>Players:</h3><hr>
+      <div class="turn_count">
+        <p>{{player1_input}}</p>
+        <div class="player_icon p1"></div>
+      </div>
+      <div class="turn_count">
+        <p>{{player2_input}}</p>
+        <div class="player_icon p2"></div>
+      </div>
+    <div id="games_won" ng-show="player!='Start'">
+      <h3>Games Won:</h3><hr>
+      <div class="turn_count">
+        <p id="turn1">{{p1_wins}}</p>
+      </div>
+      <div class="turn_count">
+        <p id="turn2">{{p2_wins}}</p>
+      </div>
     </div>
   </section>
 
   <div id="grid">
-  <div class="box"
-    ng-repeat="cell in cellz track by $index"
-    ng-click="player_move(cell)"
-    ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
-  </div>
+    <div class="box"
+      ng-repeat="cell in cellz track by $index"
+      ng-click="player_move(cell)"
+      ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
+    </div>
+    <p class="winner_text" ng-click="init()" ng-show="winner || catsgame">Play again?</p>
   </div>
 
   <script type="text/javascript">
@@ -66,6 +88,9 @@
           [0,4,8],
           [2,4,6]
           ];
+      $scope.phase = 0;
+      $scope.p1_wins = 0;
+      $scope.p2_wins = 0;
 
       $scope.init = function() {
         $scope.cellz = [
@@ -85,18 +110,16 @@
         $scope.player = "Start";
         $scope.p_number = ""; //player is undefined initially
         $scope.results = ['','','','','','','','',''];
-        $scope.phase = 0;
         $scope.p1count= 0;
         $scope.p2count= 0;
         $scope.winner = "";
-      }
-      
+      } 
 
       $scope.namePlayer = function(player){
         if (player == 1) {
           $scope.phase +=1;
-          document.getElementById("player_1").blur();
-          document.getElementById("player_2").focus();
+          document.getElementById("p1_input").blur();
+          document.getElementById("p2_input").focus();
         }
         else {  
           $scope.phase +=2;
@@ -154,17 +177,19 @@
                 $scope.winning_array = winCombos[i];
                 if ($scope.results[combo[0]] == "p1"){
                   winner_declared = true;
+                  $scope.p1_wins++;
                   $scope.winner = $scope.player1_input;
                   win_sequence($scope.player1_input, $scope.winning_array);
                 }
                 else if ($scope.results[combo[0]] == "p2"){
                   winner_declared = true;
+                  $scope.p2_wins++
                   $scope.winner = $scope.player2_input;
                   win_sequence($scope.player2_input, $scope.winning_array);
                 }
               }
               else if (winner_declared == false && $scope.moves == 10) {
-                alert("Catsgame!");
+                $scope.catsgame = true;
                 break;
               }
             }
@@ -176,15 +201,6 @@
         $scope.cellz[win_array[0]].win = "win";
         $scope.cellz[win_array[1]].win = "win";
         $scope.cellz[win_array[2]].win = "win";
-      
-        var play_again = confirm("Play another game");
-        if (play_again === true){
-          console.log("I want to play again");
-          $scope.init();
-        }
-        else {
-          // alert("Thanks for playing");
-        }
       }
 
       $scope.init();
