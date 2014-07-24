@@ -1,93 +1,12 @@
-
-
-<!DOCTYPE html>
-<html ng-app="tictactoe">
-<head>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
-  <script type="text/javascript" src="angular.js"></script>
-  <script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
-  <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
-  <title>TicTacTest</title>
-</head>
-<body ng-controller="cubeController" ng-model="cellz">
-  <header>
-    <p class="winner_text" ng-show="winner">You won, {{winner}}!</p>
-    <p class="winner_text" ng-show="catsgame">Drat, a catsgame.</p>
-  </header>
-  <section id="results">
-    <div id="game_start" ng-show="player=='Start'">
-      <h3>Start Game:</h3><hr/>
-      <form id="get_name">
-        <div>
-          <p>Player 1: {{player1_input}}</p>
-          <input ng-show="phase==0" id="p1_input" ng-enter="namePlayer(1)" type="text" ng-model="player1_input" class="name_textbox" placeholder="Name" autofocus></input>
-        </div>
-        <div ng-hide="phase==0" id="getplayer2">
-          <p>Player 2: {{player2_input}}</p>
-          <input id="p2_input" ng-enter="namePlayer(2)" ng-hide="phase>=2" type="text" ng-model="player2_input" class="name_textbox" placeholder="Name"></input>
-        </div>
-      </form>
-      <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
-    </div>
-
-    <div ng-show="player!='Start'">
-      <h3>Next Turn:</h3><hr>
-      <p>{{next_turn}}</p>
-      <div class="player_icon ng-class:p_number"></div>
-      <h3>Moves Remaining:</h3><hr>
-      <div class="turn_count">
-        <p id="turn1">{{5-player1_moves}}</p>
-      </div>
-      <div class="turn_count">
-        <p id="turn2">{{4-player2_moves}}</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="players">
-    <div ng-show="player!='Start'">
-      <h3>Players:</h3><hr>
-      <div class="turn_count">
-        <p>{{player1_input}}</p>
-        <div class="player_icon p1"></div>
-      </div>
-      <div class="turn_count">
-        <p>{{player2_input}}</p>
-        <div class="player_icon p2"></div>
-      </div>
-    <div id="games_won" ng-show="player!='Start'">
-      <h3>Games Won:</h3><hr>
-      <div class="turn_count">
-        <p id="turn1">{{p1_wins}}</p>
-      </div>
-      <div class="turn_count">
-        <p id="turn2">{{p2_wins}}</p>
-      </div>
-    </div>
-  </section>
-
-  <div id="grid">
-    <div class="box"
-      ng-repeat="cell in cellz track by $index"
-      ng-click="player_move(cell)"
-      ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
-    </div>
-    <p class="winner_text" ng-click="init()" ng-show="winner || catsgame">Play again?</p>
-  </div>
-
-
-
-  <script type="text/javascript">
     var tictactoe = angular.module("tictactoe", ["firebase"])
     tictactoe.controller('cubeController', ['$scope', function($scope, $firebase) {
       
-    var TTTref = new Firebase("https://initialtictac.firebaseIO.com/remoteCellList");
-    $scope.remoteCellList = new Firebase("https://initialtictac.firebaseIO.com/remoteCellList") ;
-    $scope.remoteCellList.$bind($scope, "$scope.cellz");
-    $scope.$watch('cellz', function(){
-      console.log('Model changed!');
-    });
+    var TTTref = new Firebase("https://initialtictac.firebaseIO.com");
+
+    $scope.remoteCellList = $firebase(new Firebase("https://initialtictac.firebaseIO.com/remoteCellList"));
+
     
+      // // $scope.cellz.$add(cell);
 
       var winCombos = [
           [0,1,2],
@@ -116,6 +35,11 @@
           {idee:8, owner:null, win:null},
           ];
 
+         $scope.remoteCellList.$bind($scope, "cellz");
+
+    $scope.$watch('cellz', function(){
+    console.log('Model changed!');
+    });
         $scope.moves = 1; //no moves made (initialize at 1 so player 1 is odd / player 2 is even)
         $scope.player1_moves=0;
         $scope.player2_moves=0; 
@@ -233,6 +157,3 @@
     });
 
 ;
-</script>  
-</body>
-</html>
