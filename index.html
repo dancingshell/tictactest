@@ -65,45 +65,133 @@
       </div>
     </div>
   </section>
-
+<section>
   <div id="grid">
-    <div class="box" id="tile{{$index}}"
+    <div class="box" id="tile{{$index}}" ondrop="drop(event)" ondragover="allowDrop(event)"
       ng-repeat="cell in cellz track by $index"
       ng-mouseup="player_move(cell)"
       ng-class="{p1: cell.owner=='p1', p2: cell.owner=='p2', box2: moves%2==0, win_box: cell.win=='win'}">
     </div>
     <p class="winner_text" ng-click="init()" ng-show="winner || catsgame">Play again?</p>
-<br>
-    <div class="drag" drag
+    <div class="drag" draggable="true" ondragstart="drag(event)"
       ng-repeat="i in items track by $index"
       ng-class="{p1: i.player=='1', p2: i.player=='2'}">
     </div>
   </div>
-
+</section>
   <script type="text/javascript">
+
+//   function handleDragStart(e) {
+//     this.style.opacity = '1.0';  // this / e.target is the source node.
+//   }
+
+//   function handleDragStart(e) {
+//     this.style.opacity = '0.4';  // this / e.target is the source node.
+//     dragSrcEl = this;
+//     e.dataTransfer.effectAllowed = 'move';
+//     e.dataTransfer.setData('text/html', this.innerHTML);
+//   }
+
+//   function handleDragOver(e) {
+//   if (e.preventDefault) {
+//     e.preventDefault(); // Necessary. Allows us to drop.
+//   }
+
+//   e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+//   return false;
+//   }
+
+//   function handleDragEnter(e) {
+//   // this / e.target is the current hover target.
+//     this.classList.add('over');
+//   }
+
+//   function handleDragLeave(e) {
+//     this.classList.remove('over');  // this / e.target is previous target element.
+//   }
+
+//   function handleDrop(e) {
+//   // this / e.target is current target element.
+
+//   if (e.stopPropagation) {
+//     e.stopPropagation(); // stops the browser from redirecting.
+//   }
+//   if (dragSrcEl != this) {
+//     // Set the source column's HTML to the HTML of the column we dropped on.
+//     dragSrcEl.innerHTML = this.innerHTML;
+//     this.innerHTML = e.dataTransfer.getData('text/html');
+//   }
+
+//   // See the section on the DataTransfer object.
+
+//   return false;
+// }
+
+// function handleDragEnd(e) {
+//   // this/e.target is the source node.
+//   [].forEach.call(cols, function (col) {
+//     col.classList.remove('over');
+//   });
+// }
+
+// var dragSrcEl = null;
+
+
+//     var cols = document.querySelectorAll('.drag, .box');
+//     [].forEach.call(cols, function(col) {
+//       col.addEventListener('dragstart', handleDragStart, false);
+//       col.addEventListener('dragenter', handleDragEnter, false);
+//       col.addEventListener('dragover', handleDragOver, false);
+//       col.addEventListener('dragleave', handleDragLeave, false);
+//       col.addEventListener('drop', handleDrop, false);
+//       col.addEventListener('dragend', handleDragEnd, false);
+//     });
+
+
+
+
   var TTTApp = angular.module('TTTApp', ['firebase']);
       TTTApp.controller("cubeController", ["$scope", "$firebase",
   function($scope, $firebase) {
 
-    var TTTRef = new Firebase("https://initialtictac.firebaseIO.com");
+    // var TTTRef = new Firebase("https://initialtictac.firebaseIO.com");
 
-    $scope.clickCounter = $firebase(new Firebase("https://initialtictac.firebaseIO.com" + '/clickCounter'));
+    // $scope.clickCounter = $firebase(new Firebase("https://initialtictac.firebaseIO.com" + '/clickCounter'));
 
-    $scope.remoteCellList = 
-    $firebase(new Firebase("https://initialtictac.firebaseIO.com" + '/remoteCellList')) ;
+    // $scope.remoteCellList = 
+    // $firebase(new Firebase("https://initialtictac.firebaseIO.com" + '/remoteCellList')) ;
 
-    $scope.clickCount = 0 ;
+    // $scope.clickCount = 0 ;
 
-      var winCombos = [
-          [0,1,2],
-          [3,4,5],
-          [6,7,8],
-          [0,3,6],
-          [1,4,7],
-          [2,5,8],
-          [0,4,8],
-          [2,4,6]
-          ];
+    //   $scope.remoteCellList.$bind($scope, "cellz");
+    // $scope.$watch('cellz', function() {
+    //   console.log('Model changed!') ;
+    // }) ;
+
+    $scope.allowDrop = function(ev) {
+        ev.preventDefault();
+    }
+
+    $scope.drag = function(ev) {
+        ev.dataTransfer.setData("Text", ev.target.id);
+    }
+
+    $scope.drop =function(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("Text");
+        ev.target.appendChild(document.getElementById(data));
+    }
+
+    var winCombos = [
+        [0,1,2],
+        [3,4,5],
+        [6,7,8],
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6]
+        ];
       $scope.phase = 0;
       $scope.p1_wins = 0;
       $scope.p2_wins = 0;
@@ -143,11 +231,7 @@
           {idee:7, owner:null, win:null},
           {idee:8, owner:null, win:null}];
 
-        $scope.remoteCellList.$bind($scope, "cellz");
-        $scope.$watch('cellz', function() {
-          console.log('Model changed!') ;
-        }) ;
-
+  
 
         $scope.moves = 1; //no moves made (initialize at 1 so player 1 is odd / player 2 is even)
         $scope.player1_moves=0;
@@ -268,48 +352,48 @@
         };
     })
 
-.directive("drag", ["$document", function($document){
-    return function(s, e, attr){
-      var start_x = 0,
-          start_y = 0,
-          x = 0,
-          y = 0;
+// .directive("drag", ["$document", function($document){
+//     return function(s, e, attr){
+//       var start_x = 0,
+//           start_y = 0,
+//           x = 0,
+//           y = 0;
 
-      e.css({
-        position: "relative",
-        backgroundColor: 'yellow',
-        padding: "10px",
-        pointerevents: "inherit"
-      });
+//       e.css({
+//         position: "relative",
+//         backgroundColor: 'yellow',
+//         padding: "10px",
+//         pointerevents: "inherit"
+//       });
 
-      e.on("mousedown", function(event){
-        console.log(event);
-        event.preventDefault();
-        start_x = event.pageX - x;
-        start_y = event.pageY - y;
-        $document.on("mousemove", mousemove);
-        $document.on("mouseup", mouseup);
-      });
+//       e.on("mousedown", function(event){
+//         console.log(event);
+//         event.preventDefault();
+//         start_x = event.pageX - x;
+//         start_y = event.pageY - y;
+//         $document.on("mousemove", mousemove);
+//         $document.on("mouseup", mouseup);
+//       });
 
-      function mousemove(event) {
-        x = event.pageX - start_x;
-        y = event.pageY - start_y;
-        e.css({
-          top: y + "px",
-          left: x + "px"
-        });
-      }
+//       function mousemove(event) {
+//         x = event.pageX - start_x;
+//         y = event.pageY - start_y;
+//         e.css({
+//           top: y + "px",
+//           left: x + "px"
+//         });
+//       }
 
-      function mouseup() {
-        $document.off("mousemove", mousemove);
-        $document.off("mouseup", mouseup);
-        $scope.simulate(document.getElementById("grid"), "click", { pointerX: 123, pointerY: 321 });
-        console.log(event);
-      }
+//       function mouseup() {
+//         $document.off("mousemove", mousemove);
+//         $document.off("mouseup", mouseup);
+//         $scope.simulate(document.getElementById("grid"), "click", { pointerX: 123, pointerY: 321 });
+//         console.log(event);
+//       }
 
-    }
+//     }
 
-}])
+// }])
 ;
 
 </script>  

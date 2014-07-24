@@ -8,7 +8,7 @@ body{
 header{
   height: 70px;
   text-align: center;
-  padding-top: 20px
+  padding-top: 10px
 }
 
 #get_name{
@@ -78,6 +78,13 @@ header{
   border: 4px solid black;
   margin-top: 20px;
   display: inline-block;
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+  -moz-user-select:none;
+}
+
+.drag.over{
+  border: 2px dashed #000;
 }
 
 .drag:hover{
@@ -93,6 +100,10 @@ header{
   height: 100px;
 }
 
+.box.over{
+  border: 2px dashed #000;
+  }
+
 .p1 {
   background: #00CCCC;
 }
@@ -100,6 +111,8 @@ header{
 .p2 {
   background: #FF9966;
 }
+
+section .drag:hover .box { background-color: yellow; }
 
 .box:hover {
   border: 4px solid #00CCCC;
@@ -132,6 +145,11 @@ header{
     -webkit-animation-timing-function: ease-out;
     animation-timing-function: ease-out;
 }
+
+.win_box:hover{
+  border: 4px solid black;
+}
+
 
 
 
