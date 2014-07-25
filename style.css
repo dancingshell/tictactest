@@ -44,11 +44,11 @@ header{
 
 .turn_count #turn1 {
   text-align: center;
-  color: #00CCCC;
+  color: rgb(0,129,78);
 }
 
 .turn_count #turn2 {
-  color: #FF9966;
+  color: rgb(163,103,44)
 }
 
 
@@ -60,9 +60,23 @@ header{
 
 #grid{
   text-align: center;
-  border: 4px solid black;
+  /*border: 4px solid black*/;
   width: 370px;
   margin: 0 auto;
+  position: relative;
+ 
+}
+
+#tree{
+  background: url("waterfall.gif");
+  background-size: cover;
+  z-index: -1;
+  margin-left: 19px;
+  margin-top: 5px;
+  width: 333px;
+  height: 339px;
+  position: absolute;
+  
 }
 
 #turn1, #turn2{
@@ -74,8 +88,8 @@ header{
   width: 26px;
   height: 26px;
   background-color: white;
-  margin: 2px;
-  border: 4px solid black;
+  margin: 5px;
+ /* border: 4px solid black;*/
   margin-top: 20px;
   display: inline-block;
   -khtml-user-drag: element;
@@ -98,6 +112,9 @@ header{
   border: 4px solid black;
   width: 100px;
   height: 100px;
+  z-index: -1;
+  opacity: 0.6;
+  filter: alpha(opacity=60);
 }
 
 .box.over{
@@ -105,30 +122,35 @@ header{
   }
 
 .p1 {
-  background: #00CCCC;
+  background: rgb(0,129,78);
 }
 
 .p2 {
-  background: #FF9966;
+  background: rgb(163,103,44);
 }
 
 section .drag:hover .box { background-color: yellow; }
 
-.box:hover {
+/*.box:hover {
   border: 4px solid #00CCCC;
-}
+  opacity: 1.0;
+  filter: alpha(opacity=100);
+}*/
 
-.box2:hover {
+/*.box2:hover {
   border: 4px solid #FF9966;
-}
+ 
+}*/
 
-.p1:hover {
+/*.p1:hover {
   border: 4px solid #00CCCC;
-}
-
+ 
+}*/
+/*
 .p2:hover{
   border: 4px solid #FF9966;
-}
+
+}*/
 
 .player_icon:hover{
   border: none;
@@ -139,13 +161,22 @@ section .drag:hover .box { background-color: yellow; }
 }
 
 .win_box {
-/*  background-color: pink;*/
- -webkit-transform: perspective(400px) translate3d(0, 0, 100px) rotate3d(0, 1, 0, -190deg);
+  pointer-events: none;
+}
+ /*-webkit-transform: perspective(400px) translate3d(0, 0, 100px) rotate3d(0, 1, 0, -190deg);
     transform: perspective(400px) translate3d(0, 0, 100px) rotate3d(0, 1, 0, -190deg);
     -webkit-animation-timing-function: ease-out;
     animation-timing-function: ease-out;
-}
+}*/
 
+.lose_box {
+  /*background: white;*/
+  opacity:.0;
+  pointer-events: none;
+  transition-delay:s;
+  -webkit-transition: opacity 1s linear .5s; /* For Safari 3.1 to 6.0 */
+  transition: opacity 1s linear .5s;
+}
 .win_box:hover{
   border: 4px solid black;
 }
