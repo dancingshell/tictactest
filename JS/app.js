@@ -1,6 +1,6 @@
 var TTTApp = angular.module('TTTApp', []);
       TTTApp.controller("cubeController", ["$scope",
-  function($scope, $firebase) {
+  function($scope) {
 
     // var TTTRef = new Firebase("https://initialtictac.firebaseIO.com");
 
@@ -91,22 +91,25 @@ var TTTApp = angular.module('TTTApp', []);
         else {
           square_colors = ["red1", "red2", "red3", "red4", "red5"];
         }
-
-        function set_color(cell){
-          cell.color = square_colors[i];
-          i++;
-          console.log(cell.color);
-          if (i==5){
-            i=0;
+        $scope.changeColor = setInterval(function() {
+          if (cell.owner == null) {
+            cell.color = square_colors[i];
+            i++;
+            console.log(cell);
+            console.log(cell.color);
+            if (i==square_colors.length){
+              i=0;
+            }
           }
-        }
-        $scope.changeColor = setInterval(function(){set_color(cell)}, 2000);
-        // $scope.changeColor;     
+        }, 500);   
+        $scope.changeColor;
       }
       
       $scope.unhover = function(cell){
-        cell.color = null;
         clearInterval($scope.changeColor);
+        if (cell.owner == null) {
+          cell.color = null;
+        }
       }
 
       $scope.namePlayer = function(player) {
@@ -123,6 +126,7 @@ var TTTApp = angular.module('TTTApp', []);
       $scope.player_move = function(cell) {
         clearInterval($scope.changeColor);
         console.log("test");
+        //setting plater names to default if no input
         if ($scope.player1_input==undefined) {
           $scope.player1_input = "Player 1"; 
         }
@@ -131,15 +135,14 @@ var TTTApp = angular.module('TTTApp', []);
         }
 
         if ($scope.moves %2!=0) { //odds (player 1)
-          $scope.player = "Player 1";
-          $scope.p_number = "p2";
-          play_game(cell, "p1", "p2");
-        }
-        else { //even (player 1)
-          $scope.player = "Player 2";
           $scope.p_number = "p1";
-          play_game(cell, "p2", "p1");
+          $scope.p_opponent = "p2"
         }
+        else { //even (player 2)
+          $scope.p_number = "p2";
+          $scope.p_opponent = "p1"
+        }
+        play_game(cell, $scope.p_number, $scope.p_opponent);
       }
 
       var play_game = function(cell, player, opponent) {
@@ -149,25 +152,26 @@ var TTTApp = angular.module('TTTApp', []);
         else if ($scope.results[cell.idee] == player){
           alert("You already own that space. Choose Another");
         }
-        else {
+        else { //executes square ownership assignment
           $scope.results[cell.idee] = player;
-
           $scope.moves ++;
-          if ($scope.player == "Player 1") {
+          if ($scope.p_number == "p1") {
+            if (cell.color == null) {cell.color = "blue1";}
             $scope.player1_moves++;
             $scope.next_turn = $scope.player2_input;
             cell.owner = player;
           }
           else {
+            if (cell.color == null) {cell.color = "red1";}
             $scope.player2_moves++;
             $scope.next_turn = $scope.player1_input;
             cell.owner = player;
-          }
-        // $scope.p1p2 = $scope.results[box];
+          };
 
-           if ($scope.moves>5){
+          //win logic
+          if ($scope.moves>5){
             $scope.winner_declared = false;
-            for (var i = 0; i < winCombos.length; i++){ //win logic
+            for (var i = 0; i < winCombos.length; i++){
               var combo = winCombos[i];
               if (($scope.results[combo[0]]==$scope.results[combo[1]]) && ($scope.results[combo[1]]==$scope.results[combo[2]]) && ($scope.results[combo[0]]!="")) {
                 $scope.winning_array = winCombos[i];
@@ -218,47 +222,4 @@ var TTTApp = angular.module('TTTApp', []);
             });
         };
     })
-
-// .directive("drag", ["$document", function($document){
-//     return function(s, e, attr){
-//       var start_x = 0,
-//           start_y = 0,
-//           x = 0,
-//           y = 0;
-
-//       e.css({
-//         position: "relative",
-//         backgroundColor: 'yellow',
-//         padding: "10px",
-//         pointerevents: "inherit"
-//       });
-
-//       e.on("mousedown", function(event){
-//         console.log(event);
-//         event.preventDefault();
-//         start_x = event.pageX - x;
-//         start_y = event.pageY - y;
-//         $document.on("mousemove", mousemove);
-//         $document.on("mouseup", mouseup);
-//       });
-
-//       function mousemove(event) {
-//         x = event.pageX - start_x;
-//         y = event.pageY - start_y;
-//         e.css({
-//           top: y + "px",
-//           left: x + "px"
-//         });
-//       }
-
-//       function mouseup(event) {
-//         $document.off("mousemove", mousemove);
-//         $document.off("mouseup", mouseup);
-//         // $scope.simulate(document.getElementById("grid"), "click", { pointerX: 123, pointerY: 321 });
-//         console.log(event);
-//       }
-
-//     }
-
-// }])
 ;

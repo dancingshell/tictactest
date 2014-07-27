@@ -75,9 +75,8 @@
       ng-mouseleave="unhover(cell)"
       ui-on-drop="onDrop($event, $data, cell)"
       ng-repeat="cell in cellz track by $index"
-      ng-mouseup="player_move(cell)"
-      ng-class="{p1: cell.owner=='p1',
-      p2: cell.owner=='p2',
+      ng-click="player_move(cell)"
+      ng-class="{
       box2: moves%2==0,
       win_box: cell.win=='win',
       lose_box: (winner_declared && cell.win!='win'),
