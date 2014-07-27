@@ -1,5 +1,5 @@
-var TTTApp = angular.module('TTTApp', ['firebase']);
-      TTTApp.controller("cubeController", ["$scope", "$firebase",
+var TTTApp = angular.module('TTTApp', []);
+      TTTApp.controller("cubeController", ["$scope",
   function($scope, $firebase) {
 
     // var TTTRef = new Firebase("https://initialtictac.firebaseIO.com");
@@ -26,8 +26,6 @@ var TTTApp = angular.module('TTTApp', ['firebase']);
     console.log(array);
   };
 
-  $scope.test = function() { alert('test test test'); };
-
     var winCombos = [
         [0,1,2],
         [3,4,5],
@@ -41,10 +39,11 @@ var TTTApp = angular.module('TTTApp', ['firebase']);
       $scope.phase = 0;
       $scope.p1_wins = 0;
       $scope.p2_wins = 0;
-
+      $scope.games_played = 0;
 
       $scope.init = function() {
-
+        $scope.games_played++;
+        console.log($scope.games_played);
         $scope.dropped = [];
         $scope.items = [
           {id: 0, player: 1}, 
@@ -59,15 +58,15 @@ var TTTApp = angular.module('TTTApp', ['firebase']);
       ];
 
         $scope.cellz = [
-          {idee:0, owner:null, win:null},
-          {idee:1, owner:null, win:null},
-          {idee:2, owner:null, win:null},
-          {idee:3, owner:null, win:null},
-          {idee:4, owner:null, win:null},
-          {idee:5, owner:null, win:null},
-          {idee:6, owner:null, win:null},
-          {idee:7, owner:null, win:null},
-          {idee:8, owner:null, win:null}];
+          {idee:0, owner:null, win:null, color:null},
+          {idee:1, owner:null, win:null, color:null},
+          {idee:2, owner:null, win:null, color:null},
+          {idee:3, owner:null, win:null, color:null},
+          {idee:4, owner:null, win:null, color:null},
+          {idee:5, owner:null, win:null, color:null},
+          {idee:6, owner:null, win:null, color:null},
+          {idee:7, owner:null, win:null, color:null},
+          {idee:8, owner:null, win:null, color:null}];
 
   
 
@@ -82,6 +81,34 @@ var TTTApp = angular.module('TTTApp', ['firebase']);
         $scope.winner_declared= false;
       } 
 
+
+       $scope.hover = function(cell) {
+        var i = 0;
+        var square_colors;
+        if ($scope.moves %2!=0) {
+          square_colors = ["blue1", "blue2", "blue3", "blue4", "blue5"];
+        }
+        else {
+          square_colors = ["red1", "red2", "red3", "red4", "red5"];
+        }
+
+        function set_color(cell){
+          cell.color = square_colors[i];
+          i++;
+          console.log(cell.color);
+          if (i==5){
+            i=0;
+          }
+        }
+        $scope.changeColor = setInterval(function(){set_color(cell)}, 2000);
+        // $scope.changeColor;     
+      }
+      
+      $scope.unhover = function(cell){
+        cell.color = null;
+        clearInterval($scope.changeColor);
+      }
+
       $scope.namePlayer = function(player) {
         if (player == 1) {
           $scope.phase +=1;
@@ -94,12 +121,7 @@ var TTTApp = angular.module('TTTApp', ['firebase']);
       }
 
       $scope.player_move = function(cell) {
-      //   ev.preventDefault();
-      // var data = ev.dataTransfer.getData("Text");
-      // ev.target.appendChild(document.getElementById(data));
-      //   var rect = document.getElementById("tile"+cell.idee).getBoundingClientRect();
-
-        // console.log(rect);
+        clearInterval($scope.changeColor);
         console.log("test");
         if ($scope.player1_input==undefined) {
           $scope.player1_input = "Player 1"; 
