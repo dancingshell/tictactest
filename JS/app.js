@@ -102,8 +102,7 @@ TTTApp.controller("cubeController", ["$scope",
             i=0;
           }
         }
-      }, 500);   
-      // 
+      }, 500);    
     }
     
     $scope.unhover = function(cell){
@@ -127,7 +126,7 @@ TTTApp.controller("cubeController", ["$scope",
 
     $scope.player_move = function(cell) {
       // clearInterval($scope.changeColor);
-      console.log("test");
+      console.log(cell.owner);
       //setting plater names to default if no input
       if ($scope.player1_input==undefined) {
         $scope.player1_input = "Player 1"; 
