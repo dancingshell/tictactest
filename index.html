@@ -17,7 +17,7 @@
     <p class="winner_text" ng-show="catsgame">Drat, a catsgame.</p>
   </header>
   <section id="results">
-    <div id="game_start" ng-show="player=='Start'">
+    <div id="game_start" ng-show="p_number=='Start'">
       <h3>Start Game:</h3><hr/>
       <form id="get_name">
         <div>
@@ -32,7 +32,7 @@
       <h3 ng-show="phase>=2">Choose a Square, {{player1_input}}.</h3>
     </div>
 
-    <div ng-show="player!='Start'">
+    <div ng-show="p_number!='Start'">
       <h3>Next Turn:</h3><hr>
       <p>{{next_turn}}</p>
       <div class="player_icon ng-class:p_number"></div>
@@ -47,7 +47,7 @@
   </section>
 
   <section id="players">
-    <div ng-show="player!='Start'">
+    <div ng-show="p_number!='Start'">
       <h3>Players:</h3><hr>
       <div class="turn_count">
         <p>{{player1_input}}</p>
@@ -57,7 +57,7 @@
         <p>{{player2_input}}</p>
         <div class="player_icon p2"></div>
       </div>
-    <div id="games_won" ng-show="player!='Start'">
+    <div id="games_won" ng-show="p_number!='Start'">
       <h3>Games Won:</h3><hr>
       <div class="turn_count">
         <p id="turn1">{{p1_wins}}</p>

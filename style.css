@@ -17,6 +17,7 @@ header{
 
 .winner_text{
   font-size: 25px;
+  cursor: pointer;
 }
 
 .name_textbox{
@@ -126,7 +127,16 @@ header{
   filter: alpha(opacity=60);
 }
 
+/*.box:hover {
+  background: pink;
+}*/
+
+
 .blue1 {
+  background-color: rgba(61, 0, 108, 1);
+}
+
+.blue1:hover {
   background: rgba(61, 0, 108, 1);
 }
 
@@ -134,7 +144,15 @@ header{
   background: rgba(57, 0, 174, 1);
 }
 
+.blue2:hover {
+  background: rgba(57, 0, 174, 1);
+}
+
 .blue3 {
+  background: rgba(0, 0, 255, 1);
+}
+
+.blue3:hover {
   background: rgba(0, 0, 255, 1);
 }
 
@@ -142,7 +160,13 @@ header{
   background: rgba(0, 118, 123, 1);
 }
 
+.blue4:hover {
+  background: rgba(0, 118, 123, 1);
+}
 .blue5 {
+  background: rgba(0, 206, 161, 1);
+}
+.blue5:hover {
   background: rgba(0, 206, 161, 1);
 }
 .red1 {
