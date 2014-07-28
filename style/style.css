@@ -118,7 +118,7 @@ header{
   opacity: 0.6;
 }
 /* BLUE AND RED RESPONSIBLE FOR SETTING COLOR ON USER CLICK*/
-/* CHANGE RGBA BLUE FOR PLAYER ONE AND RED FOR PLAYER TWO*/
+/* CHANGE RGBA RED FOR PLAYER ONE AND BLUE FOR PLAYER TWO*/
 /* COLORS CHANGED IN # AND #RED MUST ALSO BE CHANGED IN KEYFRAMES BELOW*/
 #blue1 { background: rgba( 61,   0, 108,  01); }
 #blue2 { background: rgba( 57,   0, 174,  01); }
@@ -126,30 +126,27 @@ header{
 #blue4 { background: rgba(  0, 118, 123,  01); }
 #blue5 { background: rgba(  0, 206, 161,  01); }
 /*==============================================*/
-#red1  { background: rgba(255,   77,  0,  01); }
-#red2  { background: rgba(255,   77,  0,  01); }
-#red3  { background: rgba(255,    0,  0,  01); }
-#red4  { background: rgba(203,    0,  50, 01); }
-#red5  { background: rgba(  0,  255,  2,  01); }
+#red1  { background: rgba(255, 125,   0,  01); }
+#red2  { background: rgba(255,  77,   0,  01); }
+#red3  { background: rgba(255,   0,   0,  01); }
+#red4  { background: rgba(203,   0,  50,  01); }
+#red5  { background: rgba(164,   0,  81,  01); }
 
 /*============PLAYER1 COLOR BLOCK===================*/
 
 /* Delete the #p1_input to stop text box color*/
 .pp1:hover, .pi1, #p1_input {
-  background: rgb(0,129,78);
+  background: rgba( 61,   0, 108,  01);
   -webkit-animation: pp1 3s infinite alternate;
 }
 @-webkit-keyframes pp1 {
-  15%  {background-color:  rgba(255, 77, 0, 1);  }
-  40%  {background-color:  rgba(255, 77, 0, 1);  }
-  80%  {background-color:  rgba(255, 77, 0, 1);   }
-  100% {background-color:  rgba(255, 0, 0, 1); }
+  10%  { background: rgba( 61,   0, 108,  01); }
+  30%  { background: rgba( 57,   0, 174,  01); }
+  50%  { background: rgba(  0,   0, 255,  01); }
+  70%  { background: rgba(  0, 118, 123,  01); }
+  100% { background: rgba(  0, 206, 161,  01); }
 }
-/*
-15%  { background: rgba(255,   77,  0,  01); }
-40%  { background: rgba(255,    0,  0,  01); }
-80%  { background: rgba(203,    0,  50, 01); }
-100%  { background: rgba(  0,  255,  2,  01); }*/
+
 /*=========END PLAYER1 COLOR BLOCK===================*/
 /*============PLAYER2 COLOR BLOCK===================*/
 
@@ -159,17 +156,19 @@ header{
   -webkit-animation: pp2 3s infinite alternate;
 }
 @-webkit-keyframes pp2 {
-  40%  {background-color:  rgba(0, 255, 0, 1);  }
-  80%  {background-color:  rgba(0, 77, 255, 1);   }
-  100% {background-color:  rgba(0, 50, 50, 1); }
+  10% { background: rgba(255, 125,   0,  01); }
+  30% { background: rgba(255,  77,   0,  01); }
+  50% { background: rgba(255,   0,   0,  01); }
+  70% { background: rgba(203,   0,  50,  01); }
+ 100% { background: rgba(164,   0,  81,  01); }
 }
 /*============END PLAYER2 COLOR BLOCK===================*/
 
-.p1 { background: rgba(20, 20, 20, 1); }
+.p1 { background: rgba(0, 77, 255, 1); }
 
 /*============PLAYER2 COLOR BLOCK===================*/
 
-.p2 { background: rgba(0, 77, 255, 1); }
+.p2 { background: rgba(255, 125,   0,  01); }
 
 /*============PLAYER2 COLOR BLOCK===================*/
 
