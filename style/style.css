@@ -23,14 +23,14 @@ header{
 .name_textbox{
   
   padding-left: 15px;
-  height: 20px
+  height: 20px;
 }
 
 #results, #players {
   position: fixed;
-  top: 80px;
-  right: 60px;
-  width: 250px;
+  top:     80px;
+  right:   60px;
+  width:  250px;
   height: 300px;
 }
 
@@ -40,11 +40,11 @@ header{
 
 .turn_count{
   display: inline-block;
-  margin: 0px 10px;
+  margin:      0px 10px;
 }
 
 .turn_count #turn1 {
-  text-align: center;
+  text-align:   center;
   color: rgb(0,129,78);
 }
 
@@ -54,16 +54,16 @@ header{
 
 
 .player_icon{
-  width: 50px;
-  height: 50px;
+  width:    50px;
+  height:   50px;
   margin: 0 auto;
 }
 
 #grid{
   text-align: center;
   /*border: 4px solid black*/;
-  width: 370px;
-  margin: 0 auto;
+  width:       370px;
+  margin:     0 auto;
   position: relative;
  
 }
@@ -94,7 +94,7 @@ header{
   margin: 0px 17px;
 }
 
-.drag{
+.drag {
   width: 26px;
   height: 26px;
   background-color: white;
@@ -107,14 +107,6 @@ header{
   -moz-user-select:none;
 }
 
-.drag.over{
-  border: 2px dashed #000;
-}
-
-.drag:hover{
-  border: none;
-}
-
 .box {
   margin: 3px;
   background: white;
@@ -124,99 +116,45 @@ header{
   height: 100px;
   z-index: -1;
   opacity: 0.6;
-  filter: alpha(opacity=60);
 }
+/* BLUE AND RED RESPONSIBLE FOR SETTING COLOR ON USER CLICK*/
+/* CHANGE RGBA BLUE FOR PLAYER ONE AND RED FOR PLAYER TWO*/
+/* COLORS CHANGED IN # AND #RED MUST ALSO BE CHANGED IN KEYFRAMES BELOW*/
+#blue1 { background: rgba( 61,   0, 108,  01); }
+#blue2 { background: rgba( 57,   0, 174,  01); }
+#blue3 { background: rgba(  0,   0, 255,  01); }
+#blue4 { background: rgba(  0, 118, 123,  01); }
+#blue5 { background: rgba(  0, 206, 161,  01); }
+/*==============================================*/
+#red1  { background: rgba(255,   77,  0,  01); }
+#red2  { background: rgba(255,   77,  0,  01); }
+#red3  { background: rgba(255,    0,  0,  01); }
+#red4  { background: rgba(203,    0,  50, 01); }
+#red5  { background: rgba(  0,  255,  2,  01); }
 
-/*.box:hover {
-  background: pink;
-}*/
-.grid:hover {
-  background-color: #tomato!important;
-}
-
-.blue1 {
-  background-color: rgba(61, 0, 108, 1);
-}
-
-.blue1:hover {
-  background: rgba(61, 0, 108, 1);
-}
-
-.blue2 {
-  background: rgba(57, 0, 174, 1);
-}
-
-.blue2:hover {
-  background: rgba(57, 0, 174, 1);
-}
-
-.blue3 {
-  background: rgba(0, 0, 255, 1);
-}
-
-.blue3:hover {
-  background: rgba(0, 0, 255, 1);
-}
-
-.blue4 {
-  background: rgba(0, 118, 123, 1);
-}
-
-.blue4:hover {
-  background: rgba(0, 118, 123, 1);
-}
-.blue5 {
-  background: rgba(0, 206, 161, 1);
-}
-.blue5:hover {
-  background: rgba(0, 206, 161, 1);
-}
-.box:hover, .red1:hover, .red:hover, .red3:hover, .red4:hover, .red5:hover {
-  background: rgba(255, 125, 255, 1);
-  -webkit-animation: 3s infinite alternate;
-}
-@-webkit-keyframes .box {
-  40%  {background-color:  rgb(255,8,162);  }
-  80%  {background-color:  rgb(70,255,8);   }
-  100% {background-color:  rgb(85,161,255); }
-}
-
-.red1 {
-  background: rgba(255, 77, 0, 1);
-}
-
-.red2 {
-  background: rgba(255, 77, 0, 1);
-}
-
-.red3 {
-  background: rgba(255, 0, 0, 1);
-}
-
-.red4 {
-  background: rgba(203, 0, 50, 1);
-}
-
-.red5 {
-  background: rgba(0, 255, 2, 1)!important;
-}
-
-/*.box.over{
-  border: 2px dashed #000;
-  }*/
 /*============PLAYER1 COLOR BLOCK===================*/
-.pp1:hover {
+
+/* Delete the #p1_input to stop text box color*/
+.pp1:hover, .pi1, #p1_input {
   background: rgb(0,129,78);
   -webkit-animation: pp1 3s infinite alternate;
 }
 @-webkit-keyframes pp1 {
+  15%  {background-color:  rgba(255, 77, 0, 1);  }
   40%  {background-color:  rgba(255, 77, 0, 1);  }
   80%  {background-color:  rgba(255, 77, 0, 1);   }
   100% {background-color:  rgba(255, 0, 0, 1); }
 }
+/*
+15%  { background: rgba(255,   77,  0,  01); }
+40%  { background: rgba(255,    0,  0,  01); }
+80%  { background: rgba(203,    0,  50, 01); }
+100%  { background: rgba(  0,  255,  2,  01); }*/
 /*=========END PLAYER1 COLOR BLOCK===================*/
 /*============PLAYER2 COLOR BLOCK===================*/
-.pp2:hover {
+
+/* Delete the #p2_input to stop text box color*/
+.pp2:hover, .pi2, #p2_input { 
   background: rgb(163,103,44);
   -webkit-animation: pp2 3s infinite alternate;
 }
@@ -227,24 +165,11 @@ header{
 }
 /*============END PLAYER2 COLOR BLOCK===================*/
 
-.p1 {
-  background: rgb(0,129,78);
-  -webkit-animation: p1 3s infinite alternate;
-}
-@-webkit-keyframes p1 {
-  40%  {background-color:  rgba(255, 77, 0, 1);  }
-  80%  {background-color:  rgba(255, 77, 0, 1);   }
-  100% {background-color:  rgba(255, 0, 0, 1); }
-}
-.p2 {
-  background: rgb(163,103,44);
-  -webkit-animation: p2 3s infinite alternate;
-}
-@-webkit-keyframes p2 {
-  40%  {background-color:  rgba(0, 255, 0, 1);  }
-  80%  {background-color:  rgba(0, 77, 255, 1);   }
-  100% {background-color:  rgba(0, 50, 50, 1); }
-}
+.p1 { background: rgba(20, 20, 20, 1); }
+
+/*============PLAYER2 COLOR BLOCK===================*/
+
+.p2 { background: rgba(0, 77, 255, 1); }
 
 /*============PLAYER2 COLOR BLOCK===================*/
 
