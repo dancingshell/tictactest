@@ -5,6 +5,7 @@
 <head>
   <link rel="stylesheet" type="text/css" href="style.css"/>
   <script type="text/javascript" src="angular.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.17/angular-animate.js"></script>
   <script src="draganddrop.js"></script>
   <script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
   <script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.js"></script>
@@ -70,28 +71,29 @@
 <section>
   <div id="grid">
      <!-- <div autoblur class="tree" ng-class="{gif1:games_played==2, gif2:games_played==3, gif3:games_played==4}"></div> -->
-    <div class="box" id="tile{{$index}}"
+    <div class="box tile{{$index}}"
       ng-mouseover="hover(cell)"
       ng-mouseleave="unhover(cell)"
       ui-on-drop="onDrop($event, $data, cell)"
       ng-repeat="cell in cellz track by $index"
-      ng-click="player_move(cell)"
-      ng-class="{
-      box2: moves%2==0,
-      win_box: cell.win=='win',
-      lose_box: (winner_declared && cell.win!='win'),
-      blue1: cell.color=='blue1',
-      blue2: cell.color=='blue2',
-      blue3: cell.color=='blue3',
-      blue4: cell.color=='blue4',
-      blue5: cell.color=='blue5',
-      red1: cell.color=='red1',
-      red2: cell.color=='red2',
-      red3: cell.color=='red3',
-      red4: cell.color=='red4',
-      red5: cell.color=='red5'}">
+      ng-click="player_move(cell.color)"
+      ng-class="(moves %2!=0 ? 'pP1' : 'pp2')">
+      {{moves}} <!-- DELETE: ONLY FOR TESTING -->
     </div>
-
+   <!-- ng-mouseleave="unhover(cell)"
+        box2: moves%2==0,
+        win_box: cell.win=='win',
+        lose_box: (winner_declared && cell.win!='win'),
+        blue1: cell.color=='blue1',
+        blue2: cell.color=='blue2',
+        blue3: cell.color=='blue3',
+        blue4: cell.color=='blue4',
+        blue5: cell.color=='blue5',
+        red1:  cell.color=='red1',
+        red2:  cell.color=='red2',
+        red3:  cell.color=='red3',
+        red4:  cell.color=='red4',
+        red5:  cell.color=='red5' -->
     <p class="winner_text" ng-click="init()" ng-show="winner || catsgame">Play again?</p>
     <div class="drag"
       ng-hide="true"

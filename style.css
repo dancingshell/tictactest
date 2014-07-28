@@ -130,7 +130,9 @@ header{
 /*.box:hover {
   background: pink;
 }*/
-
+.grid:hover {
+  background-color: #tomato!important;
+}
 
 .blue1 {
   background-color: rgba(61, 0, 108, 1);
@@ -169,8 +171,18 @@ header{
 .blue5:hover {
   background: rgba(0, 206, 161, 1);
 }
+.box:hover, .red1:hover, .red:hover, .red3:hover, .red4:hover, .red5:hover {
+  background: rgba(255, 125, 255, 1);
+  -webkit-animation: 3s infinite alternate;
+}
+@-webkit-keyframes .box {
+  40%  {background-color:  rgb(255,8,162);  }
+  80%  {background-color:  rgb(70,255,8);   }
+  100% {background-color:  rgb(85,161,255); }
+}
+
 .red1 {
-  background: rgba(255, 125, 0, 1);
+  background: rgba(255, 77, 0, 1);
 }
 
 .red2 {
@@ -186,20 +198,54 @@ header{
 }
 
 .red5 {
-  background: rgba(164, 0, 81, 1);
+  background: rgba(0, 255, 2, 1)!important;
 }
 
 /*.box.over{
   border: 2px dashed #000;
   }*/
 
-/*.p1 {
+.pp1:hover {
   background: rgb(0,129,78);
+  -webkit-animation: pp1 3s infinite alternate;
+}
+@-webkit-keyframes pp1 {
+  40%  {background-color:  rgba(255, 77, 0, 1);  }
+  80%  {background-color:  rgba(255, 77, 0, 1);   }
+  100% {background-color:  rgba(255, 0, 0, 1); }
+}
+/*============PLAYER2 COLOR BLOCK===================*/
+.pp2:hover {
+  background: rgb(163,103,44);
+  -webkit-animation: pp2 3s infinite alternate;
+}
+@-webkit-keyframes pp2 {
+  40%  {background-color:  rgba(0, 255, 0, 1);  }
+  80%  {background-color:  rgba(0, 77, 255, 1);   }
+  100% {background-color:  rgba(0, 50, 50, 1); }
 }
 
+.p1 {
+  background: rgb(0,129,78);
+  -webkit-animation: p1 3s infinite alternate;
+}
+@-webkit-keyframes p1 {
+  40%  {background-color:  rgba(255, 77, 0, 1);  }
+  80%  {background-color:  rgba(255, 77, 0, 1);   }
+  100% {background-color:  rgba(255, 0, 0, 1); }
+}
+/*============PLAYER2 COLOR BLOCK===================*/
 .p2 {
   background: rgb(163,103,44);
-}*/
+  -webkit-animation: p2 3s infinite alternate;
+}
+@-webkit-keyframes p2 {
+  40%  {background-color:  rgba(0, 255, 0, 1);  }
+  80%  {background-color:  rgba(0, 77, 255, 1);   }
+  100% {background-color:  rgba(0, 50, 50, 1); }
+}
+
+/*============PLAYER2 COLOR BLOCK===================*/
 
 /*section .drag:hover .box { background-color: yellow; }
 */

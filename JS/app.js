@@ -56,7 +56,8 @@ TTTApp.controller("cubeController", ["$scope",
         {id: 7, player: 2},
         {id: 8, player: 2}
       ];
-
+      $scope.cells      = ['','','','','','','','',''];
+      
       $scope.cellz = [
         {idee:0, owner:null, win:null, color:null},
         {idee:1, owner:null, win:null, color:null},
@@ -69,11 +70,11 @@ TTTApp.controller("cubeController", ["$scope",
         {idee:8, owner:null, win:null, color:null}];
 
       $scope.moves = 1; //no moves made (initialize at 1 so player 1 is odd / player 2 is even)
-      $scope.player1_moves=0;
-      $scope.player2_moves=0; 
+      $scope.player1_moves = 0;
+      $scope.player2_moves = 0; 
       $scope.p_number = "Start"; //player is undefined initially
-      $scope.results = ['','','','','','','','',''];
-      $scope.winner = ""
+      $scope.results  = ['','','','','','','','',''];
+      $scope.winner   = ""
       $scope.catsgame = ""
       $scope.winner_declared= false;
     } 
@@ -87,10 +88,13 @@ TTTApp.controller("cubeController", ["$scope",
       else {
         $scope.square_colors = ["red1", "red2", "red3", "red4", "red5"];
       }
-      // cell.color = "blue3";
+      // cell.color = "blue1";
       $scope.changeColor = setInterval(function() {
         if (cell.owner == null) {
           cell.color = $scope.square_colors[i];
+          console.log($scope.player1_moves);
+          
+          // document.getElementById('cell').style.background = $scope.square_colors[i];
           i++;
           console.log(cell);
           console.log(cell.color);
@@ -99,7 +103,7 @@ TTTApp.controller("cubeController", ["$scope",
           }
         }
       }, 500);   
-      // $scope.changeColor();
+      // 
     }
     
     $scope.unhover = function(cell){
@@ -122,7 +126,7 @@ TTTApp.controller("cubeController", ["$scope",
     }
 
     $scope.player_move = function(cell) {
-      clearInterval($scope.changeColor);
+      // clearInterval($scope.changeColor);
       console.log("test");
       //setting plater names to default if no input
       if ($scope.player1_input==undefined) {
@@ -134,11 +138,11 @@ TTTApp.controller("cubeController", ["$scope",
 
       if ($scope.moves %2!=0) { //odds (player 1)
         $scope.p_number = "p1";
-        $scope.p_opponent = "p2"
+        $scope.p_opponent = "p2";
       }
       else { //even (player 2)
         $scope.p_number = "p2";
-        $scope.p_opponent = "p1"
+        $scope.p_opponent = "p1";
       }
       play_game(cell, $scope.p_number, $scope.p_opponent);
     }
@@ -158,6 +162,7 @@ TTTApp.controller("cubeController", ["$scope",
           $scope.player1_moves++;
           $scope.next_turn = $scope.player2_input;
           cell.owner = player;
+          $scope.color = cell.color
         }
         else {
           if (cell.color == null) {cell.color = "red1";}
