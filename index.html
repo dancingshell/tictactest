@@ -47,11 +47,11 @@
       <h3>Players:</h3><hr>
       <div class="turn_count">
         <p>{{player1_input}}</p>
-        <div class="player_icon p1"></div>
+        <div class="player_icon pi1"></div>
       </div>
       <div class="turn_count">
         <p>{{player2_input}}</p>
-        <div class="player_icon p2"></div>
+        <div class="player_icon pi2"></div>
       </div>
     <div id="games_won" ng-show="p_number!='Start'">
       <h3>Games Won:</h3><hr>
@@ -67,16 +67,15 @@
   <div id="grid">
      <!-- <div autoblur class="tree" ng-class="{gif1:games_played==2, gif2:games_played==3, gif3:games_played==4}"></div> -->
     <div class="box tile{{$index}}"
+      id="{{cell.color}}" 
       ng-mouseover="hover(cell)"
       ng-mouseleave="unhover(cell)"
       ui-on-drop="onDrop($event, $data, cell)"
       ng-repeat="cell in cellz track by $index"
-      ng-click="player_move(cell.color)"
-      ng-class="(moves %2!=0 ? 'pp1' : 'pp2')">
-      {{moves}} <!-- DELETE: ONLY FOR TESTING -->
+      ng-click="player_move(cell)"
+      ng-class="moves %2!=0 ? 'pp2' : 'pp1' ">
     </div>
-   <!-- ng-mouseleave="unhover(cell)"
-        box2: moves%2==0,
+   <!-- box2: moves%2==0,
         win_box: cell.win=='win',
         lose_box: (winner_declared && cell.win!='win'),
         blue1: cell.color=='blue1',
