@@ -73,7 +73,7 @@
       ui-on-drop="onDrop($event, $data, cell)"
       ng-repeat="cell in cellz track by $index"
       ng-click="player_move(cell)"
-      ng-class="moves %2!=0 ? 'pp2' : 'pp1' ">
+      ng-class="{'pp1': moves %2!=0, 'pp2': moves %2==0}">
     </div>
    <!-- box2: moves%2==0,
         win_box: cell.win=='win',
